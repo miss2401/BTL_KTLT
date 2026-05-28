@@ -4,6 +4,6 @@ match answer:
     case 1:
         pass
     case 2:
-        CS.Create_user
+        CS.Create_user()
     case _:
         pass

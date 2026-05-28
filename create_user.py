@@ -1,22 +1,31 @@
+from data import BankDatabase as BD
 class User:
-    def __init__(self, ten_dang_nhap, ho_ten, email, sdt = 0, cccd = 0):
-        self.ten_dang_nhap = ten_dang_nhap
+    def __init__(self, sdt,  ho_ten, email, cccd, ma_pin, mat_khau):
         self.ho_ten = ho_ten
         self.sdt = sdt
         self.email = email
         self.cccd = cccd
+        self.stk = stk
+        self.ma_pin = ma_pin
+        self.mat_khau = mat_khau
 def check_number(arr):
-    if(arr[0] != '0'):
-        return 1
     for i in arr:
         if(i < '0' or i > '9'):
             return 1
     return 0
-co_chu_thuong = False
-co_chu_hoa = False
-co_so = False
-co_ky_tu_dac_biet = False
+def check_name(arr):
+    for i in arr:
+        is_lowercase = (i >= 'a' and i <= 'z')
+        is_uppercase = (i >= 'A' and i <= 'Z')
+        is_space = (i == ' ')
+        if not (is_lowercase or is_uppercase or is_space):
+            return 1
+    return 0
 def check_password(arr):
+    co_chu_thuong = False
+    co_chu_hoa = False
+    co_so = False
+    co_ky_tu_dac_biet = False
     for i in arr:
         if(i >= 'a' and i <= 'z'):
             co_chu_thuong = True
@@ -32,10 +41,30 @@ def check_password(arr):
         return 1
 def Create_user():
     sdt = input("So dien thoai: ")
-    while(len(sdt) != 10 or CS.check_number(sdt)):
+    while(len(sdt) != 10 or sdt[0] != '0' or check_number(sdt)):
         sdt = input("Nhap lai so dien thoai: ")
-        password = input("Mat khau: ")
-    while(len(password) < 8 or CS.check_password(password)):
+    password1 = input("Mat khau: ")
+    while(len(password1) < 8 or check_password(password1)):
         print("Mat khau phai co it nhat 8 ki tu, co ket hop giua chu cai in hoa, chu so va ki tu dac biet")
-        password = input("Nhap lai mat khau: ")
+        password1 = input("Nhap lai mat khau: ")
+    password2 = input("Nhap lai mat khau: ")
+    while(password1 != password2):
+        print("Mat khau khong khop")
+        password2 = input("Nhap lai mat khau: ")
+    cccd = input("Nhap so CMND/CCCD: ")
+    while(len(cccd) != 12 or cccd[0] != '0' or check_number(cccd)):
+        cccd = input("Nhap lai CMND/CCCD: ")
+    name = input("Nhap ho va ten: ").title()
+    while(len(name) == 0 or check_name(name)):
+        name = input("Nhap lai ho va ten: ").title()
+    ma_pin = input("Nhap ma pin: ")
+    while(len(ma_pin) != 6 or check_number(ma_pin)):
+        ma_pin = input("Nhap lai ma pin")
+    email = input("Nhap email: ")
+    if("@gmail.com" not in email):
+        email = email + "@gmail.com"
+    database = BD()
+    database.them_tai_khoan_moi(name, sdt, password2, email, cccd, ma_pin)
     print("Tao tai khoan thanh cong")
+    
+    
