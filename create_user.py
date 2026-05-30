@@ -5,15 +5,14 @@ class User:
         self.sdt = sdt
         self.email = email
         self.cccd = cccd
-        self.stk = stk
         self.ma_pin = ma_pin
         self.mat_khau = mat_khau
-def check_number(arr):
+def Kiem_tra_so(arr):
     for i in arr:
         if(i < '0' or i > '9'):
             return 1
     return 0
-def check_name(arr):
+def Kiem_tra_ten(arr):
     for i in arr:
         is_lowercase = (i >= 'a' and i <= 'z')
         is_uppercase = (i >= 'A' and i <= 'Z')
@@ -21,7 +20,7 @@ def check_name(arr):
         if not (is_lowercase or is_uppercase or is_space):
             return 1
     return 0
-def check_password(arr):
+def check_mat_khau(arr):
     co_chu_thuong = False
     co_chu_hoa = False
     co_so = False
@@ -41,30 +40,30 @@ def check_password(arr):
         return 1
 def Create_user():
     sdt = input("So dien thoai: ")
-    while(len(sdt) != 10 or sdt[0] != '0' or check_number(sdt)):
+    while(len(sdt) != 10 or sdt[0] != '0' or Kiem_tra_so(sdt)):
         sdt = input("Nhap lai so dien thoai: ")
-    password1 = input("Mat khau: ")
-    while(len(password1) < 8 or check_password(password1)):
+    mat_khau1 = input("Mat khau: ")
+    while(len(mat_khau1) < 8 or check_mat_khau(mat_khau1)):
         print("Mat khau phai co it nhat 8 ki tu, co ket hop giua chu cai in hoa, chu so va ki tu dac biet")
-        password1 = input("Nhap lai mat khau: ")
-    password2 = input("Nhap lai mat khau: ")
-    while(password1 != password2):
+        mat_khau1 = input("Nhap lai mat khau: ")
+    mat_khau2 = input("Nhap lai mat khau: ")
+    while(mat_khau1 != mat_khau2):
         print("Mat khau khong khop")
-        password2 = input("Nhap lai mat khau: ")
+        mat_khau2 = input("Nhap lai mat khau: ")
     cccd = input("Nhap so CMND/CCCD: ")
-    while(len(cccd) != 12 or cccd[0] != '0' or check_number(cccd)):
+    while(len(cccd) != 12 or cccd[0] != '0' or Kiem_tra_so(cccd)):
         cccd = input("Nhap lai CMND/CCCD: ")
-    name = input("Nhap ho va ten: ").title()
-    while(len(name) == 0 or check_name(name)):
-        name = input("Nhap lai ho va ten: ").title()
+    ten = input("Nhap ho va ten: ").title()
+    while(len(ten) == 0 or Kiem_tra_ten(ten)):
+        ten = input("Nhap lai ho va ten: ").title()
     ma_pin = input("Nhap ma pin: ")
-    while(len(ma_pin) != 6 or check_number(ma_pin)):
+    while(len(ma_pin) != 6 or Kiem_tra_so(ma_pin)):
         ma_pin = input("Nhap lai ma pin")
     email = input("Nhap email: ")
     if("@gmail.com" not in email):
         email = email + "@gmail.com"
     database = BD()
-    database.them_tai_khoan_moi(name, sdt, password2, email, cccd, ma_pin)
+    database.them_tai_khoan_moi(ten, sdt, mat_khau2, email, cccd, ma_pin)
     print("Tao tai khoan thanh cong")
     
     
