@@ -15,7 +15,7 @@ def dang_nhap():
         if tai_khoan is not None and tai_khoan.mat_khau == mat_khau:            
             print("DANG NHAP THANH CONG")
             print("Xin chao    :", tai_khoan.ho_ten)
-            print("So tai khoan:", tai_khoan.so_tai_khoan)
+            print("So tai khoan:", tai_khoan.so_tai_khoan if tai_khoan.so_tai_khoan != "" else sdt)
             print("So du       :", tai_khoan.so_du, "VND")
             while True:
                 print("\nBAN DANG CAN DICH VU GI?")
