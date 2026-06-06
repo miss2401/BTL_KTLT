@@ -12,8 +12,6 @@ class TaiKhoan:
         self.so_tai_khoan = str(so_tai_khoan)
         self.so_du = int(so_du)
         self.ma_pin = ma_pin
-
-
 class BankDatabase:
     def __init__(self, db_file="data.json"):
         self.db_file = db_file

@@ -9,8 +9,6 @@ class GiaoDich:
         self.sdt_nhan = sdt_nhan
         self.so_tien = int(so_tien)
         self.noi_dung = noi_dung
-
-
 class LichSuGiaoDich:
     def __init__(self, db_file="history.json"):
         self.db_file = db_file
@@ -30,11 +28,9 @@ class LichSuGiaoDich:
         return so_luong
 
     def _bien_doi_thanh_chuoi(self, gia_tri):
-        # Nếu đã là chuỗi sẵn thì trả về luôn
         if gia_tri.__class__ == str:
             return gia_tri
             
-        # Nếu là số nguyên
         if gia_tri.__class__ == int:
             if gia_tri == 0:
                 return "0"
@@ -42,8 +38,7 @@ class LichSuGiaoDich:
             am = False
             if gia_tri < 0:
                 am = True
-                gia_tri = -gia_tri
-                
+                gia_tri = -gia_tri        
             chuoi_so = ""
             bang_chu_so = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
             
@@ -166,8 +161,7 @@ class LichSuGiaoDich:
         do_dai_he_thong = self._dem_phan_tu(du_lieu_he_thong)
         for i in range(do_dai_he_thong):
             sdt = du_lieu_he_thong[i][0]
-            mang_gd = du_lieu_he_thong[i][1]
-            
+            mang_gd = du_lieu_he_thong[i][1]     
             user_str = f'    "{sdt}": {{\n        "lich_su": [\n'
             do_dai_mang_gd = self._dem_phan_tu(mang_gd)
             for j in range(do_dai_mang_gd):
