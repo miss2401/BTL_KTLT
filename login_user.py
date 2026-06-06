@@ -1,4 +1,24 @@
-from data import BankDatabase
+import json
+from data import BankDatabase as BD
+import tichkiem as TK
+
+def doc_du_lieu():
+    try:
+        with open("data.json", "r", encoding="utf-8") as file:
+            danh_sach_tai_khoan = json.load(file)
+            return danh_sach_tai_khoan            
+    except FileNotFoundError:
+        print("Loi: Khong tim thay file du lieu data.json")
+        return {}
+    except json.JSONDecodeError:
+        print("Loi: File data.json bi sai dinh dang")
+        return {}
+def luu_du_lieu(danh_sach_tai_khoan):
+    try:
+        with open("data.json", "w", encoding="utf-8") as file:
+            json.dump(danh_sach_tai_khoan, file, indent=4, ensure_ascii=False)
+    except Exception as e:
+        print("Loi khi luu du lieu:", e)
 
 from giao_dich import nap_tien, rut_tien, chuyen_khoan
 
