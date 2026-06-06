@@ -1,6 +1,32 @@
 import os
 import random
 
+class GiaoDich:
+    def __init__(self, loai_giao_dich, so_tien, so_du_sau_giao_dich, tai_khoan_lien_quan):
+        self.loai_giao_dich = loai_giao_dich
+        self.so_tien = so_tien
+        self.so_du_sau_giao_dich = so_du_sau_giao_dich
+        self.tai_khoan_lien_quan = tai_khoan_lien_quan
+
+class NodeGiaoDich:
+    def __init__(self, giao_dich):
+        self.giao_dich = giao_dich
+        self.next = None
+
+class DanhSachGiaoDich:
+    def __init__(self):
+        self.head = None
+
+    def them_giao_dich(self, giao_dich):
+        n_node = NodeGiaoDich(giao_dich)
+        if self.head is None:
+            self.head = n_node
+        else:
+            current = self.head
+            while current.next is not None:
+                current = current.next
+            current.next = n_node
+
 class TaiKhoan:
     #Khuôn mẫu cho đối tượng tài khoản người dùng
     def __init__(self, so_dien_thoai, ho_ten, mat_khau, email, cccd, so_tai_khoan, so_du=0, ma_pin=""):
@@ -12,6 +38,8 @@ class TaiKhoan:
         self.so_tai_khoan = str(so_tai_khoan)
         self.so_du = int(so_du)
         self.ma_pin = ma_pin
+        self.lich_su_giao_dich = DanhSachGiaoDich()
+
 class BankDatabase:
     def __init__(self, db_file="data.json"):
         self.db_file = db_file
