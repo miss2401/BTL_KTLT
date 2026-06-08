@@ -1,5 +1,5 @@
 import json
-from data import BankDatabase as BD
+from data import BankDatabase 
 import tichkiem as TK
 
 def doc_du_lieu():
@@ -44,7 +44,8 @@ def dang_nhap():
                 print("1. Nap tien")
                 print("2. Rut tien")
                 print("3. Chuyen khoan")
-                print("4. Dang xuat")               
+                print("4. Gui tich kiem")     
+                print("5. Dang xuat")               
                 lua_chon = input("Nhap lua chon: ")               
                 if lua_chon == "1":
                     tien_nap = int(input("Nhap so tien muon nap (VND): "))
@@ -55,8 +56,15 @@ def dang_nhap():
                 elif lua_chon == "3":
                     tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
                     tien_chuyen = int(input("Nhap so tien muon chuyen (VND): "))
-                    chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)                    
+                    chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)     
                 elif lua_chon == "4":
+                    db_bank = BankDatabase()
+                    tk_obj = db_bank.lay_thong_tin_user(sdt)
+                    if tk_obj:
+                        TK.menu_tich_kiem(tk_obj)
+                        danh_sach_tai_khoan = doc_du_lieu()
+                        tai_khoan = danh_sach_tai_khoan[sdt]                 
+                elif lua_chon == "5":
                     print("Da dang xuat tai khoan!")
                     return
                 else:
