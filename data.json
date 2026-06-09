@@ -1,0 +1,20 @@
+{
+    "0384788193": {
+        "ho_ten": "Nguyen Huu Kien",
+        "mat_khau": "Huukien2006!",
+        "email": "aicxbt@gmail.com",
+        "cccd": "006206003656",
+        "so_tai_khoan": "84712860",
+        "so_du": 40000,
+        "ma_pin": "123456"
+    },
+    "0123456789": {
+        "ho_ten": "Nguyen Huu Tung",
+        "mat_khau": "Huukien2006@",
+        "email": "fluidmagnetic@gmail.com",
+        "cccd": "006206003655",
+        "so_tai_khoan": "21702627",
+        "so_du": 70000,
+        "ma_pin": "654321"
+    }
+}
