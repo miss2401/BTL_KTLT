@@ -14,7 +14,7 @@ class SoTietKiem:
         self.ngay_gui = ngay_gui            
         self.lai_suat = float(lai_suat)    
         self.trang_thai = int(trang_thai)  
-class QuanLyTichKiem:
+class QuanLyTietKiem:
     def __init__(self, db_file="tichkiem.json"):
         self.db_file = db_file
         if not os.path.exists(self.db_file):
@@ -107,7 +107,7 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
         print("Loi: Khong tim thay thong tin tai khoan dong bo!")
         return
     db_bank._ghi_file(danh_sach_tk)
-    ql_tk = QuanLyTichKiem()
+    ql_tk = QuanLyTietKiem()
     danh_sach_so = ql_tk._doc_file() 
     ma_so_stk = "STK" + str(random.randint(100000, 999999))
     ngay_hom_nay = datetime.date.today().strftime("%Y-%m-%d")
@@ -124,7 +124,7 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
 
 
 def xem_danh_sach_so(tai_khoan_dang_nhap):
-    ql_tk = QuanLyTichKiem()
+    ql_tk = QuanLyTietKiem()
     danh_sach_so = ql_tk._doc_file()  
     dem_so = 0
     for so in danh_sach_so:
@@ -138,7 +138,7 @@ def xem_danh_sach_so(tai_khoan_dang_nhap):
 
 
 def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
-    ql_tk = QuanLyTichKiem()
+    ql_tk = QuanLyTietKiem()
     danh_sach_so = ql_tk._doc_file()   
     dem_so = xem_danh_sach_so(tai_khoan_dang_nhap)
     if dem_so == 0:

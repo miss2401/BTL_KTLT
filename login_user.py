@@ -1,6 +1,6 @@
 import json
 from data import BankDatabase 
-import tichkiem as TK
+import tietkiem as TK
 
 def doc_du_lieu():
     try:
