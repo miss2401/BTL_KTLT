@@ -3,7 +3,6 @@ import random
 import json
 import datetime
 from data import BankDatabase
-from luulichsugiaodich import LichSuGiaoDich
 
 class SoTietKiem:
     def __init__(self, ma_so, so_dien_thoai, so_tien_gui, ky_han, ngay_gui, lai_suat, trang_thai):
@@ -22,7 +21,7 @@ class QuanLyTietKiem:
                 json.dump([], f, ensure_ascii=False, indent=2)
 
     def _doc_file(self):
-        """Đọc danh sách sổ tiết kiếm từ file JSON"""
+        #Doc danh sach so tiet kiem tu file JSON va tra ve dang list of SoTietKiem objects
         danh_sach_so = []
         if not os.path.exists(self.db_file):
             return danh_sach_so
@@ -49,7 +48,7 @@ class QuanLyTietKiem:
         return danh_sach_so
 
     def _ghi_file(self, danh_sach_so):
-        """Ghi danh sách sổ tiết kiếm vào file JSON"""
+        #Ghi danh sach so tiet kiem vao file JSON
         data = []
         for so in danh_sach_so:
             data.append({
@@ -114,11 +113,6 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
     so_moi = SoTietKiem(ma_so_stk, tai_khoan_dang_nhap.so_dien_thoai, so_tien_gui, 0, ngay_hom_nay, 0.1, 1)
     danh_sach_so.append(so_moi)
     ql_tk._ghi_file(danh_sach_so)
-    try:
-        ls = LichSuGiaoDich()
-        ls.ghi_nhan_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "SO_TIET_KIEM", so_tien_gui, "Mo so tiet kiem khong ky han " + ma_so_stk)
-    except:
-        pass
     print("Mo so tiet kiem thanh cong! Ma so:", ma_so_stk)
     print("So du con lai trong tai khoan chinh:", tai_khoan_dang_nhap.so_du, "VND")
 
@@ -161,11 +155,6 @@ def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
                     tai_khoan_dang_nhap.so_du = danh_sach_tk[j].so_du
                     break
             db_bank._ghi_file(danh_sach_tk)          
-            try:
-                ls = LichSuGiaoDich()
-                ls.ghi_nhan_giao_dich("SO_TIET_KIEM", tai_khoan_dang_nhap.so_dien_thoai, tong_nhan, "Tat toan so tiet kiem khong ky han " + ma_so_nhap + " (Goc: " + str(tien_goc) + ", Lai: " + str(tien_lai) + ")")
-            except:
-                pass               
             print("Tat toan thanh cong so tiet kiem " + ma_so_nhap)
             print("Tien goc nhan: " + str(tien_goc) + " VND")
             print("Tien lai nhan: " + str(tien_lai) + " VND")

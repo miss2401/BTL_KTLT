@@ -13,6 +13,7 @@ def doc_du_lieu():
     except json.JSONDecodeError:
         print("Loi: File data.json bi sai dinh dang")
         return {}
+
 def luu_du_lieu(danh_sach_tai_khoan):
     try:
         with open("data.json", "w", encoding="utf-8") as file:
@@ -45,25 +46,84 @@ def dang_nhap():
                 print("2. Rut tien")
                 print("3. Chuyen khoan")
                 print("4. Gui tich kiem")     
-                print("5. Dang xuat")               
-                lua_chon = input("Nhap lua chon: ")               
+                print("5. Dang xuat")
+                try:
+                    lua_chon = input("Nhap lua chon: ")
+                except:
+                    print("Lua chon khong hop le!")
+                    continue
+                
                 if lua_chon == "1":
-                    tien_nap = int(input("Nhap so tien muon nap (VND): "))
-                    nap_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_nap)                  
+                    try:
+                        tien_nap = int(input("Nhap so tien muon nap (VND): "))
+                        if tien_nap <= 0:
+                            print("So tien phai lon hon 0!")
+                            continue
+                        nap_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_nap)
+                        danh_sach_tk = db._doc_file()
+                        for tk in danh_sach_tk:
+                            if tk.so_dien_thoai == sdt:
+                                tai_khoan = tk
+                                break
+                    except ValueError:
+                        print("So tien phai la so nguyen!")
+                    except Exception as e:
+                        print("Loi:", str(e))
+                        
                 elif lua_chon == "2":
-                    tien_rut = int(input("Nhap so tien muon rut (VND): "))
-                    rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)                   
+                    try:
+                        tien_rut = int(input("Nhap so tien muon rut (VND): "))
+                        if tien_rut <= 0:
+                            print("So tien phai lon hon 0!")
+                            continue
+                        rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)
+                        danh_sach_tk = db._doc_file()
+                        for tk in danh_sach_tk:
+                            if tk.so_dien_thoai == sdt:
+                                tai_khoan = tk
+                                break
+                    except ValueError:
+                        print("So tien phai la so nguyen!")
+                    except Exception as e:
+                        print("Loi:", str(e))
+                        
                 elif lua_chon == "3":
-                    tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
-                    tien_chuyen = int(input("Nhap so tien muon chuyen (VND): "))
-                    chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)     
+                    try:
+                        tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
+                        if not tk_nhan or len(tk_nhan) != 8:
+                            print("So tai khoan phai la 8 chu so!")
+                            continue
+                        tien_chuyen = int(input("Nhap so tien muon chuyen (VND): "))
+                        if tien_chuyen <= 0:
+                            print("So tien phai lon hon 0!")
+                            continue
+                        chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
+                        danh_sach_tk = db._doc_file()
+                        for tk in danh_sach_tk:
+                            if tk.so_dien_thoai == sdt:
+                                tai_khoan = tk
+                                break
+                    except ValueError:
+                        print("So tien phai la so nguyen!")
+                    except Exception as e:
+                        print("Loi:", str(e))
+                        
                 elif lua_chon == "4":
-                    db_bank = BankDatabase()
-                    tk_obj = db_bank.lay_thong_tin_user(sdt)
-                    if tk_obj:
-                        TK.menu_tich_kiem(tk_obj)
-                        danh_sach_tai_khoan = doc_du_lieu()
-                        tai_khoan = danh_sach_tai_khoan[sdt]                 
+                    try:
+                        db_bank = BankDatabase()
+                        tk_obj = db_bank.lay_thong_tin_user(sdt)
+                        if tk_obj:
+                            TK.menu_tich_kiem(tk_obj)
+                            danh_sach_tk = db._doc_file()
+                            for tk in danh_sach_tk:
+                                if tk.so_dien_thoai == sdt:
+                                    tai_khoan = tk
+                                    break
+                        else:
+                            print("Khong tim thay tai khoan!")
+                    except Exception as e:
+                        print("Loi khi truy cap tiet kiem:", str(e))
+                        
                 elif lua_chon == "5":
                     print("Da dang xuat tai khoan!")
                     return

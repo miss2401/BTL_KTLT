@@ -199,7 +199,7 @@ class LichSuGiaoDich:
 
     def ghi_nhan_giao_dich(self, sdt_gui, sdt_nhan, so_tien, noi_dung):
         du_lieu = self._doc_file()
-        ma_gd = self._sinh_ma_giao_dich()
+        ma_gd = self._sinh_ma_giao_dich_duy_nhat()
         
         sdt_gui_str = self._bien_doi_thanh_chuoi(sdt_gui)
         sdt_nhan_str = self._bien_doi_thanh_chuoi(sdt_nhan)
@@ -207,7 +207,10 @@ class LichSuGiaoDich:
         gd_obj = GiaoDich(ma_gd, sdt_gui_str, sdt_nhan_str, so_tien, noi_dung)
         
         du_lieu = self._them_giao_dich_vao_sdt(du_lieu, sdt_gui_str, gd_obj)
-        du_lieu = self._them_giao_dich_vao_sdt(du_lieu, sdt_nhan_str, gd_obj)
+        
+        # Chỉ thêm vào sdt_nhan nếu đó là số điện thoại hợp lệ (10 chữ số)
+        if len(sdt_nhan_str) == 10 and sdt_nhan_str.isdigit():
+            du_lieu = self._them_giao_dich_vao_sdt(du_lieu, sdt_nhan_str, gd_obj)
         
         self._ghi_file(du_lieu)
         return ma_gd
