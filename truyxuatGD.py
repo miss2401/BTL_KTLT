@@ -74,11 +74,11 @@ class BoTimKiemGiaoDich:
     def hien_thi_giao_dich(self, danh_sach_gd, tieu_de=""):
         # Hiển thị danh sách giao dịch
         if len(danh_sach_gd) == 0:
-            print(f"\n{tieu_de} - Không tìm thấy giao dịch nào!")
+            print(f"\n{tieu_de} - Khong tim thay giao dich nao!")
             return
         
-        print(f"\n{tieu_de} - Tìm thấy {len(danh_sach_gd)} giao dịch")
-        print(f"{'STT':<5} {'Mã GD':<35} {'Ngày':<10} {'Giờ':<10} {'Người gửi':<15} {'Người nhận':<15} {'Số tiền':<15} {'Nội dung':<25}")
+        print(f"\n{tieu_de} - Tim thay {len(danh_sach_gd)} giao dịch")
+        print(f"{'STT':<5} {'Mã GD':<35} {'Ngày':<10} {'Gio':<10} {'Nguoi gui':<15} {'Nguoi nhan':<15} {'So tien':<15} {'Nội dung':<25}")
         
         for idx, gd in enumerate(danh_sach_gd, 1):
             ngay = self._cat_chuoi(gd.ma_gd, 2, 10)
