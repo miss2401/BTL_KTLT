@@ -2,17 +2,88 @@ import os
 import random
 import json
 import datetime
-from data import BankDatabase
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def append(self, data):
+        node = Node(data)
+        if self.head is None:
+            self.head = node
+        else:
+            cur = self.head
+            while cur.next:
+                cur = cur.next
+            cur.next = node
+        self.size += 1
+
+    def get_head(self):
+        return self.head
+
+    def iterate(self):
+        cur = self.head
+        while cur:
+            yield cur.data
+            cur = cur.next
+    def find_first(self, condition_func):
+        cur = self.head
+        while cur:
+            if condition_func(cur.data):
+                return cur.data
+            cur = cur.next
+        return None
+
+    def update_first(self, condition_func, new_data):
+        cur = self.head
+        while cur:
+            if condition_func(cur.data):
+                cur.data = new_data
+                return True
+            cur = cur.next
+        return False
+
+    def to_json_list(self):
+        result = []
+        cur = self.head
+        while cur:
+            result.append(cur.data)
+            cur = cur.next
+        return result
+
+    @staticmethod
+    def from_json_list(lst):
+        ll = LinkedList()
+        for item in lst:
+            ll.append(item)
+        return ll
+
 
 class SoTietKiem:
     def __init__(self, ma_so, so_dien_thoai, so_tien_gui, ky_han, ngay_gui, lai_suat, trang_thai):
         self.ma_so = ma_so
         self.so_dien_thoai = str(so_dien_thoai)
         self.so_tien_gui = int(so_tien_gui)
-        self.ky_han = int(ky_han)          
-        self.ngay_gui = ngay_gui            
-        self.lai_suat = float(lai_suat)    
-        self.trang_thai = int(trang_thai)  
+        self.ky_han = int(ky_han)
+        self.ngay_gui = ngay_gui
+        self.lai_suat = float(lai_suat)
+        self.trang_thai = int(trang_thai)
+class TaiKhoan:
+    def __init__(self, ho_ten, so_dien_thoai, mat_khau, email, cccd, so_tai_khoan, so_du, ma_pin):
+        self.ho_ten = ho_ten
+        self.so_dien_thoai = str(so_dien_thoai)
+        self.mat_khau = mat_khau
+        self.email = email
+        self.cccd = cccd
+        self.so_tai_khoan = so_tai_khoan
+        self.so_du = int(so_du)
+        self.ma_pin = str(ma_pin)
 class QuanLyTietKiem:
     def __init__(self, db_file="tichkiem.json"):
         self.db_file = db_file
@@ -21,16 +92,13 @@ class QuanLyTietKiem:
                 json.dump([], f, ensure_ascii=False, indent=2)
 
     def _doc_file(self):
-        #Doc danh sach so tiet kiem tu file JSON va tra ve dang list of SoTietKiem objects
-        danh_sach_so = []
+        """Đọc file JSON, trả về LinkedList chứa các SoTietKiem"""
         if not os.path.exists(self.db_file):
-            return danh_sach_so
-        
+            return LinkedList()
         try:
             with open(self.db_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            
-            # Chuyển đổi từ dict thành SoTietKiem objects
+                data = json.load(f)   
+            ll = LinkedList()
             for item in data:
                 so = SoTietKiem(
                     item.get("ma_so"),
@@ -41,16 +109,15 @@ class QuanLyTietKiem:
                     item.get("lai_suat"),
                     item.get("trang_thai")
                 )
-                danh_sach_so.append(so)
-        except (json.JSONDecodeError, IOError):
-            pass
-        
-        return danh_sach_so
-
+                ll.append(so)
+            return ll
+        except:
+            return LinkedList()
     def _ghi_file(self, danh_sach_so):
-        #Ghi danh sach so tiet kiem vao file JSON
         data = []
-        for so in danh_sach_so:
+        cur = danh_sach_so.get_head()
+        while cur:
+            so = cur.data
             data.append({
                 "ma_so": so.ma_so,
                 "so_dien_thoai": so.so_dien_thoai,
@@ -60,11 +127,12 @@ class QuanLyTietKiem:
                 "lai_suat": so.lai_suat,
                 "trang_thai": so.trang_thai
             })
-        
+            cur = cur.next
         with open(self.db_file, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
     def tinh_lai_suat(self, so_tien_gui, ngay_gui_str):
+        """Tính lãi suất không kỳ hạn (0.1%/tháng)"""
         try:
             ngay_gui = datetime.datetime.strptime(ngay_gui_str, "%Y-%m-%d").date()
         except:
@@ -74,109 +142,231 @@ class QuanLyTietKiem:
         if so_ngay < 0:
             so_ngay = 0
         so_thang = so_ngay // 30
-        lai_suat_thang = 0.1       
-        tien_lai = so_tien_gui * (lai_suat_thang / 100) * so_thang
-        return int(tien_lai)
+        lai_suat_thang = 0.1
+        return int(so_tien_gui * (lai_suat_thang / 100) * so_thang)
+
+def doc_tai_khoan_tu_data():
+    """Đọc file data.json, trả về LinkedList các TaiKhoan"""
+    if not os.path.exists("data.json"):
+        return LinkedList()
+    try:
+        with open("data.json", "r", encoding="utf-8") as f:
+            du_lieu = json.load(f)   # du_lieu là dict {sdt: {...}}
+        ll = LinkedList()
+        for sdt, info in du_lieu.items():
+            tk = TaiKhoan(
+                ho_ten=info.get("ho_ten", ""),
+                so_dien_thoai=sdt,
+                mat_khau=info.get("mat_khau", ""),
+                email=info.get("email", ""),
+                cccd=info.get("cccd", ""),
+                so_tai_khoan=info.get("so_tai_khoan", ""),
+                so_du=info.get("so_du", 0),
+                ma_pin=info.get("ma_pin", "")
+            )
+            ll.append(tk)
+        return ll
+    except:
+        return LinkedList()
+
+def ghi_tai_khoan_vao_data(danh_sach_tk):
+    """Ghi LinkedList TaiKhoan vào file data.json"""
+    du_lieu = {}
+    cur = danh_sach_tk.get_head()
+    while cur:
+        tk = cur.data
+        du_lieu[tk.so_dien_thoai] = {
+            "ho_ten": tk.ho_ten,
+            "mat_khau": tk.mat_khau,
+            "email": tk.email,
+            "cccd": tk.cccd,
+            "so_tai_khoan": tk.so_tai_khoan,
+            "so_du": tk.so_du,
+            "ma_pin": tk.ma_pin
+        }
+        cur = cur.next
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(du_lieu, f, ensure_ascii=False, indent=4)
+def xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
+    pin_he_thong = tai_khoan.ma_pin
+    if not pin_he_thong:
+        print("Lỗi: Không tìm thấy mã PIN!")
+        return False
+    so_lan = 0
+    while so_lan < so_lan_toi_da:
+        pin_nhap = input(f"Nhap PIN giao dich (con {so_lan_toi_da - so_lan} lan thu): ").strip()
+        if pin_nhap == pin_he_thong:
+            print("Xác thực PIN thành công!\n")
+            return True
+        else:
+            so_lan += 1
+            if so_lan < so_lan_toi_da:
+                print(f"PIN sai! Còn {so_lan_toi_da - so_lan} lần thử.")
+            else:
+                print("Sai PIN quá 3 lần. Giao dịch bị hủy!")
+    return False
+
+def ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
+    # Tạo mã giao dịch duy nhất
+    now = datetime.datetime.now()
+    timestamp = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond//1000:03d}"
+    ma_gd = f"GD{timestamp}_{random.randint(0,999):03d}"
+
+    # Đọc file history.json hiện tại
+    if os.path.exists("history.json"):
+        with open("history.json", "r", encoding="utf-8") as f:
+            try:
+                history = json.load(f)
+            except:
+                history = {}
+    else:
+        history = {}
+
+    # Tạo chuỗi giao dịch
+    gd_str = f"{ma_gd}|{sdt_gui}|{sdt_nhan}|{so_tien}|{noi_dung}"
+
+    # Thêm vào lịch sử của người gửi
+    if sdt_gui in history:
+        pass
+    history_str = ""
+    if os.path.exists("history.json"):
+        with open("history.json", "r", encoding="utf-8") as f:
+            history_str = f.read()
+    with open("lichsu_gd.txt", "a", encoding="utf-8") as f:
+        f.write(f"{ma_gd}|{sdt_gui}|{sdt_nhan}|{so_tien}|{noi_dung}\n")
+    return ma_gd
+
 
 
 def mo_so_tiet_kiem(tai_khoan_dang_nhap):
-    print("Lai suat hien hanh: 0.1% / thang")
-    print("So du tai khoan goc hien tai cua ban:", tai_khoan_dang_nhap.so_du, "VND")    
-    try:
-        so_tien_gui = int(input("Nhap so tien muon gui tiet kiem (VND): "))
-    except:
-        print("So tien phai la so nguyen!")
+    if not xac_thuc_pin(tai_khoan_dang_nhap):
         return
-    if so_tien_gui <= 0:
-        print("So tien gui phai lon hon 0!")
-        return
-    if so_tien_gui > tai_khoan_dang_nhap.so_du:
-        print("So du tai khoan khong du de thuc hien giao dich nay!")
-        return
-    db_bank = BankDatabase()
-    danh_sach_tk = db_bank._doc_file()
-    tim_thay = False
-    for i in range(len(danh_sach_tk)):
-        if danh_sach_tk[i].so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai:
-            danh_sach_tk[i].so_du -= so_tien_gui
-            tai_khoan_dang_nhap.so_du = danh_sach_tk[i].so_du
-            tim_thay = True
-            break            
-    if not tim_thay:
-        print("Loi: Khong tim thay thong tin tai khoan dong bo!")
-        return
-    db_bank._ghi_file(danh_sach_tk)
-    ql_tk = QuanLyTietKiem()
-    danh_sach_so = ql_tk._doc_file() 
-    ma_so_stk = "STK" + str(random.randint(100000, 999999))
-    ngay_hom_nay = datetime.date.today().strftime("%Y-%m-%d")
-    so_moi = SoTietKiem(ma_so_stk, tai_khoan_dang_nhap.so_dien_thoai, so_tien_gui, 0, ngay_hom_nay, 0.1, 1)
-    danh_sach_so.append(so_moi)
-    ql_tk._ghi_file(danh_sach_so)
-    print("Mo so tiet kiem thanh cong! Ma so:", ma_so_stk)
-    print("So du con lai trong tai khoan chinh:", tai_khoan_dang_nhap.so_du, "VND")
 
+    print("\nMỞ SỔ TIẾT KIỆM MỚI")
+    print("Lãi suất: 0.1%/tháng (không kỳ hạn)")
+    print(f"Số dư hiện tại: {tai_khoan_dang_nhap.so_du} VND\n")
+    try:
+        so_tien = int(input("Nhập số tiền gửi: "))
+    except:
+        print("✗ Số tiền không hợp lệ!")
+        return
+    if so_tien <= 0:
+        print("✗ Số tiền phải > 0!")
+        return
+    if so_tien > tai_khoan_dang_nhap.so_du:
+        print("✗ Số dư không đủ!")
+        return
+    # Cập nhật số dư tài khoản (từ file data.json)
+    ds_tk = doc_tai_khoan_tu_data()
+    cap_nhat = False
+    cur = ds_tk.get_head()
+    while cur:
+        if cur.data.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai:
+            cur.data.so_du -= so_tien
+            tai_khoan_dang_nhap.so_du = cur.data.so_du
+            cap_nhat = True
+            break
+        cur = cur.next
+    if not cap_nhat:
+        print("✗ Lỗi: Không tìm thấy tài khoản!")
+        return
+    ghi_tai_khoan_vao_data(ds_tk)
+
+    # Tạo sổ tiết kiệm
+    ql = QuanLyTietKiem()
+    ds_so = ql._doc_file()
+    ma_so = "STK" + str(random.randint(100000, 999999))
+    ngay_gui = datetime.date.today().strftime("%Y-%m-%d")
+    so_moi = SoTietKiem(ma_so, tai_khoan_dang_nhap.so_dien_thoai, so_tien, 0, ngay_gui, 0.1, 1)
+    ds_so.append(so_moi)
+    ql._ghi_file(ds_so)
+
+    # Ghi lịch sử giao dịch
+    noi_dung = f"Mo so tiet kiem - Ma so: {ma_so} - So tien: {so_tien} VND"
+    ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", so_tien, noi_dung)
+    print("\n✓ Mở sổ tiết kiệm thành công!")
+    print(f"  Mã số: {ma_so}")
+    print(f"  Số tiền: {so_tien} VND")
+    print(f"  Ngày gửi: {ngay_gui}")
+    print(f"  Số dư còn lại: {tai_khoan_dang_nhap.so_du} VND\n")
 
 def xem_danh_sach_so(tai_khoan_dang_nhap):
-    ql_tk = QuanLyTietKiem()
-    danh_sach_so = ql_tk._doc_file()  
-    dem_so = 0
-    for so in danh_sach_so:
+    ql = QuanLyTietKiem()
+    ds_so = ql._doc_file()
+    dem = 0
+    print("\nDANH SÁCH SỔ TIẾT KIỆM\n")
+    cur = ds_so.get_head()
+    while cur:
+        so = cur.data
         if so.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai and so.trang_thai == 1:
-            dem_so += 1
-            lai_tam_tinh = ql_tk.tinh_lai_suat(so.so_tien_gui, so.ngay_gui)
-            print(str(dem_so) + ". Ma so: " + so.ma_so + " | Tien gui: " + str(so.so_tien_gui) + " VND | Loai: Khong ky han | Ngay gui: " + so.ngay_gui + " | Lai suat: 0.1%/thang | Lai tam tinh: " + str(lai_tam_tinh) + " VND")           
-    if dem_so == 0:
-        print("Ban khong co so tiet kiem nao dang hoat dong.")
-    return dem_so
-
+            dem += 1
+            lai = ql.tinh_lai_suat(so.so_tien_gui, so.ngay_gui)
+            print(f"{dem}. Mã số: {so.ma_so}")
+            print(f"   Tiền gửi: {so.so_tien_gui} VND")
+            print(f"   Ngày gửi: {so.ngay_gui}")
+            print(f"   Lãi tạm tính: {lai} VND\n")
+        cur = cur.next
+    if dem == 0:
+        print("Bạn chưa có sổ tiết kiệm nào.\n")
+    return dem
 
 def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
-    ql_tk = QuanLyTietKiem()
-    danh_sach_so = ql_tk._doc_file()   
-    dem_so = xem_danh_sach_so(tai_khoan_dang_nhap)
-    if dem_so == 0:
-        return       
-    ma_so_nhap = input("Nhap Ma so tiet kiem muon tat toan: ")
-    tim_thay_so = False
-    for so in danh_sach_so:
-        if so.ma_so == ma_so_nhap and so.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai and so.trang_thai == 1:
-            tim_thay_so = True
+    if not xac_thuc_pin(tai_khoan_dang_nhap):
+        return
+    ql = QuanLyTietKiem()
+    ds_so = ql._doc_file()
+    dem = xem_danh_sach_so(tai_khoan_dang_nhap)
+    if dem == 0:
+        return
+    ma_so = input("Nhập mã số sổ muốn tất toán: ")
+    found = False
+    cur = ds_so.get_head()
+    while cur:
+        so = cur.data
+        if so.ma_so == ma_so and so.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai and so.trang_thai == 1:
+            found = True
             tien_goc = so.so_tien_gui
-            tien_lai = ql_tk.tinh_lai_suat(tien_goc, so.ngay_gui)
-            tong_nhan = tien_goc + tien_lai        
+            tien_lai = ql.tinh_lai_suat(tien_goc, so.ngay_gui)
+            tong = tien_goc + tien_lai
             so.trang_thai = 0
-            ql_tk._ghi_file(danh_sach_so)           
-            db_bank = BankDatabase()
-            danh_sach_tk = db_bank._doc_file()
-            for j in range(len(danh_sach_tk)):
-                if danh_sach_tk[j].so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai:
-                    danh_sach_tk[j].so_du += tong_nhan
-                    tai_khoan_dang_nhap.so_du = danh_sach_tk[j].so_du
-                    break
-            db_bank._ghi_file(danh_sach_tk)          
-            print("Tat toan thanh cong so tiet kiem " + ma_so_nhap)
-            print("Tien goc nhan: " + str(tien_goc) + " VND")
-            print("Tien lai nhan: " + str(tien_lai) + " VND")
-            print("Tong so tien da duoc cong vao tai khoan chinh. So du moi: " + str(tai_khoan_dang_nhap.so_du) + " VND")
-            break           
-    if not tim_thay_so:
-        print("Khong tim thay so tiet kiem hop le hop voi ma so tren!")
+            break
+        cur = cur.next
+    if not found:
+        print("✗ Không tìm thấy sổ tiết kiệm hợp lệ!\n")
+        return
+    # Ghi lại danh sách sổ đã cập nhật
+    ql._ghi_file(ds_so)
+    # Cập nhật số dư tài khoản
+    ds_tk = doc_tai_khoan_tu_data()
+    cur = ds_tk.get_head()
+    while cur:
+        if cur.data.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai:
+            cur.data.so_du += tong
+            tai_khoan_dang_nhap.so_du = cur.data.so_du
+            break
+        cur = cur.next
+    ghi_tai_khoan_vao_data(ds_tk)
+    noi_dung = f"Tat toan so tiet kiem - Ma so: {ma_so} - Tien goc: {tien_goc} VND - Tien lai: {tien_lai} VND - Tong: {tong} VND"
+    ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", tong, noi_dung)
+    print("\n Tất toán thành công!")
+    print(f"  Tiền gốc: {tien_goc} VND")
+    print(f"  Tiền lãi: {tien_lai} VND")
+    print(f"  Tổng nhận: {tong} VND")
+    print(f"  Số dư mới: {tai_khoan_dang_nhap.so_du} VND\n")
 def menu_tich_kiem(tai_khoan_dang_nhap):
     while True:
-        print("1. Mo so tiet kiem moi (Khong ky han)")
-        print("2. Xem danh sach so tiet kiem")
-        print("3. Tat toan so tiet kiem (Rut tien)")
-        print("4. Quay lai menu truoc")
-        
-        lua_chon = input("Nhap lua chon cua ban (1-4): ")
-        if lua_chon == "1":
+        print("1. Mở sổ tiết kiệm mới")
+        print("2. Xem danh sách sổ")
+        print("3. Tất toán sổ")
+        print("4. Quay lại")
+        chon = input("Nhập lựa chọn (1-4): ")
+        if chon == "1":
             mo_so_tiet_kiem(tai_khoan_dang_nhap)
-        elif lua_chon == "2":
+        elif chon == "2":
             xem_danh_sach_so(tai_khoan_dang_nhap)
-        elif lua_chon == "3":
+        elif chon == "3":
             tat_toan_so_tiet_kiem(tai_khoan_dang_nhap)
-        elif lua_chon == "4":
+        elif chon == "4":
             break
         else:
-            print("Lua chon khong hop le, vui long nhap lai!")
+            print("Lựa chọn không hợp lệ!\n")
