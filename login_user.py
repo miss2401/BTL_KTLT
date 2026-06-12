@@ -22,6 +22,7 @@ def luu_du_lieu(danh_sach_tai_khoan):
         print("Loi khi luu du lieu:", e)
 
 from giao_dich import nap_tien, rut_tien, chuyen_khoan
+from truyxuatGD import menu_truy_xuat_giao_dich
 
 def dang_nhap():
     db = BankDatabase("data.json")
@@ -45,8 +46,9 @@ def dang_nhap():
                 print("1. Nap tien")
                 print("2. Rut tien")
                 print("3. Chuyen khoan")
-                print("4. Gui tich kiem")     
-                print("5. Dang xuat")
+                print("4. Gui tich kiem")
+                print("5. Truy xuat giao dich")     
+                print("6. Dang xuat")
                 try:
                     lua_chon = input("Nhap lua chon: ")
                 except:
@@ -125,6 +127,12 @@ def dang_nhap():
                         print("Loi khi truy cap tiet kiem:", str(e))
                         
                 elif lua_chon == "5":
+                    try:
+                        menu_truy_xuat_giao_dich(sdt)
+                    except Exception as e:
+                        print("Loi khi truy xuat giao dich:", str(e))
+                        
+                elif lua_chon == "6":
                     print("Da dang xuat tai khoan!")
                     return
                 else:
