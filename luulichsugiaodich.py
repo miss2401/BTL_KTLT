@@ -20,51 +20,41 @@ class LichSuGiaoDich:
         if not os.path.exists(self.db_file) or os.path.getsize(self.db_file) == 0:
             with open(self.db_file, "w", encoding="utf-8") as f:
                 f.write("{}")
-
     def _dem_phan_tu(self, doi_tuong):
         so_luong = 0
         for _ in doi_tuong:
             so_luong += 1
         return so_luong
-
     def _bien_doi_thanh_chuoi(self, gia_tri):
         if gia_tri.__class__ == str:
-            return gia_tri
-            
+            return gia_tri       
         if gia_tri.__class__ == int:
             if gia_tri == 0:
-                return "0"
-            
+                return "0"  
             am = False
             if gia_tri < 0:
                 am = True
                 gia_tri = -gia_tri        
             chuoi_so = ""
-            bang_chu_so = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
-            
+            bang_chu_so = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")     
             while gia_tri > 0:
                 du = gia_tri % 10
                 chuoi_so = bang_chu_so[du] + chuoi_so
-                gia_tri = gia_tri // 10
-                
+                gia_tri = gia_tri // 10             
             if am:
                 chuoi_so = "-" + chuoi_so
-            return chuoi_so
-            
+            return chuoi_so     
         return ""
 
     def _format_hai_chu_so(self, so):
         #Thêm 0 phía trước nếu có một chữ số
         chuoi_so = self._bien_doi_thanh_chuoi(so)
-
         if self._dem_phan_tu(chuoi_so) == 1:
             return "0" + chuoi_so
         return chuoi_so
-
     def _sinh_ma_giao_dich_duy_nhat(self):
         #Cấu trúc mã giao dịch: GD + YYYYMMDD_HHMMSS_miligiay + _ + counter
-        bay_gio = datetime.datetime.now()
-        
+        bay_gio = datetime.datetime.now() 
         #Trích xuất chuỗi thời gian
         nam = self._bien_doi_thanh_chuoi(bay_gio.year)
         thang = self._format_hai_chu_so(bay_gio.month)
@@ -72,28 +62,22 @@ class LichSuGiaoDich:
         gio = self._format_hai_chu_so(bay_gio.hour)
         phut = self._format_hai_chu_so(bay_gio.minute)
         giay = self._format_hai_chu_so(bay_gio.second)
-        
         mili_giay_so = (bay_gio.microsecond // 1000)
         mili_giay = self._bien_doi_thanh_chuoi(mili_giay_so)
         while self._dem_phan_tu(mili_giay) < 3:
-            mili_giay = "0" + mili_giay
-            
-        thoi_gian_hien_tai = f"{nam}{thang}{ngay}_{gio}{phut}{giay}_{mili_giay}"
-        
+            mili_giay = "0" + mili_giay      
+        thoi_gian_hien_tai = f"{nam}{thang}{ngay}_{gio}{phut}{giay}_{mili_giay}"      
         #Kiểm tra trùng lăp
         if thoi_gian_hien_tai == self.last_miligiay:
             self.counter += 1
         else:
             self.counter = 0
-            self.last_miligiay = thoi_gian_hien_tai
-            
+            self.last_miligiay = thoi_gian_hien_tai         
         # Định dạng chuỗi số thứ tự luôn có 3 chữ số
         chuoi_counter = self._bien_doi_thanh_chuoi(self.counter)
         while self._dem_phan_tu(chuoi_counter) < 3:
-            chuoi_counter = "0" + chuoi_counter
-            
+            chuoi_counter = "0" + chuoi_counter       
         return f"GD{thoi_gian_hien_tai}_{chuoi_counter}"
-
     def _doc_file(self):
         #Đọc và phân tích dữ liệu từ file json
         du_lieu_he_thong = []
@@ -102,7 +86,6 @@ class LichSuGiaoDich:
                 chuoi_json = f.read()
         except Exception:
             return du_lieu_he_thong
-
         chuoi = []
         i = 0
         do_dai_json = self._dem_phan_tu(chuoi_json)
@@ -153,9 +136,7 @@ class LichSuGiaoDich:
                 
                 du_lieu_he_thong = du_lieu_he_thong + [[sdt, mang_gd_cua_user]]
             t += 1
-
         return du_lieu_he_thong
-
     def _ghi_file(self, du_lieu_he_thong):
         chuoi_json = "{\n"
         do_dai_he_thong = self._dem_phan_tu(du_lieu_he_thong)

@@ -1,7 +1,9 @@
 import json
 from data import BankDatabase 
 import tietkiem as TK
-
+from giao_dich import nap_tien, rut_tien, chuyen_khoan
+from truyxuatGD import menu_truy_xuat_giao_dich
+from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, check_mat_khau
 def doc_du_lieu():
     try:
         with open("data.json", "r", encoding="utf-8") as file:
@@ -13,17 +15,13 @@ def doc_du_lieu():
     except json.JSONDecodeError:
         print("Loi: File data.json bi sai dinh dang")
         return {}
-
 def luu_du_lieu(danh_sach_tai_khoan):
     try:
         with open("data.json", "w", encoding="utf-8") as file:
             json.dump(danh_sach_tai_khoan, file, indent=4, ensure_ascii=False)
     except Exception as e:
         print("Loi khi luu du lieu:", e)
-
-from giao_dich import nap_tien, rut_tien, chuyen_khoan
-from truyxuatGD import menu_truy_xuat_giao_dich
-
+        
 def dang_nhap():
     db = BankDatabase("data.json")
     danh_sach_tk = db._doc_file()
@@ -54,13 +52,12 @@ def dang_nhap():
                 except:
                     print("Lua chon khong hop le!")
                     continue
-                
                 if lua_chon == "1":
                     try:
-                        tien_nap = int(input("Nhap so tien muon nap (VND): "))
-                        if tien_nap <= 0:
-                            print("So tien phai lon hon 0!")
-                            continue
+                        tien_nap = input("Nhap so tien muon nap (VND): ")
+                        while(Kiem_tra_so(tien_nap)):
+                            tien_nap = input("Nhap so tien muon nap (VND): ")
+                        tien_nap = int(tien_nap)
                         nap_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_nap)
                         danh_sach_tk = db._doc_file()
                         for tk in danh_sach_tk:
@@ -71,13 +68,13 @@ def dang_nhap():
                         print("So tien phai la so nguyen!")
                     except Exception as e:
                         print("Loi:", str(e))
-                        
+
                 elif lua_chon == "2":
                     try:
-                        tien_rut = int(input("Nhap so tien muon rut (VND): "))
-                        if tien_rut <= 0:
-                            print("So tien phai lon hon 0!")
-                            continue
+                        tien_rut = input("Nhap so tien muon rut (VND): ")
+                        while(Kiem_tra_so(tien_rut)):
+                            tien_nap = int(input("Nhap so tien muon nap (VND): "))
+                        tien_rut = int(tien_rut)
                         rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)
                         danh_sach_tk = db._doc_file()
                         for tk in danh_sach_tk:
@@ -92,13 +89,14 @@ def dang_nhap():
                 elif lua_chon == "3":
                     try:
                         tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
+                        while(Kiem_tra_so(tk_nhan)):
+                            tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
                         if not tk_nhan or len(tk_nhan) != 8:
                             print("So tai khoan phai la 8 chu so!")
                             continue
-                        tien_chuyen = int(input("Nhap so tien muon chuyen (VND): "))
-                        if tien_chuyen <= 0:
-                            print("So tien phai lon hon 0!")
-                            continue
+                        tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
+                        while(Kiem_tra_so(tk_nhan)):
+                            tien_chuyen = int(tien_chuyen)
                         chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
                         danh_sach_tk = db._doc_file()
                         for tk in danh_sach_tk:
@@ -108,8 +106,7 @@ def dang_nhap():
                     except ValueError:
                         print("So tien phai la so nguyen!")
                     except Exception as e:
-                        print("Loi:", str(e))
-                        
+                        print("Loi:", str(e))                       
                 elif lua_chon == "4":
                     try:
                         db_bank = BankDatabase()
@@ -143,6 +140,3 @@ def dang_nhap():
         print("Ban da nhap sai tai khoan hoac mat khau")
         print("So lan con lai:", 5 - so_lan_sai)       
     print("\nBan da nhap sai qua 5 lan. Tai khoan tam thoi bi khoa. Vui long den chi nhanh ngan hang gan nhat de duoc ho tro.")
-
-if __name__ == "__main__":
-    dang_nhap()

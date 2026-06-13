@@ -63,8 +63,6 @@ class LinkedList:
         for item in lst:
             ll.append(item)
         return ll
-
-
 class SoTietKiem:
     def __init__(self, ma_so, so_dien_thoai, so_tien_gui, ky_han, ngay_gui, lai_suat, trang_thai):
         self.ma_so = ma_so
@@ -90,7 +88,6 @@ class QuanLyTietKiem:
         if not os.path.exists(self.db_file):
             with open(self.db_file, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
-
     def _doc_file(self):
         if not os.path.exists(self.db_file):
             return LinkedList()
@@ -204,12 +201,11 @@ def xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
     return False
 
 def ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
-    # Tạo mã giao dịch duy nhất
     now = datetime.datetime.now()
     timestamp = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond//1000:03d}"
     ma_gd = f"GD{timestamp}_{random.randint(0,999):03d}"
 
-    # Đọc file history.json hiện tại
+    # Đọc history.json hiện tại
     if os.path.exists("history.json"):
         with open("history.json", "r", encoding="utf-8") as f:
             try:
@@ -219,22 +215,24 @@ def ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
     else:
         history = {}
 
-    # Tạo chuỗi giao dịch
     gd_str = f"{ma_gd}|{sdt_gui}|{sdt_nhan}|{so_tien}|{noi_dung}"
 
     # Thêm vào lịch sử của người gửi
-    if sdt_gui in history:
-        pass
-    history_str = ""
-    if os.path.exists("history.json"):
-        with open("history.json", "r", encoding="utf-8") as f:
-            history_str = f.read()
-    with open("lichsu_gd.txt", "a", encoding="utf-8") as f:
-        f.write(f"{ma_gd}|{sdt_gui}|{sdt_nhan}|{so_tien}|{noi_dung}\n")
+    if sdt_gui not in history:
+        history[sdt_gui] = {"lich_su": []}
+    history[sdt_gui]["lich_su"].append(gd_str)
+
+    # Thêm vào lịch sử của người nhận (nếu không phải tài khoản hệ thống)
+    if sdt_nhan not in ("TIETKIEM", "NAP_TIEN", "RUT_TIEN") and sdt_nhan != sdt_gui:
+        if sdt_nhan not in history:
+            history[sdt_nhan] = {"lich_su": []}
+        history[sdt_nhan]["lich_su"].append(gd_str)
+
+    # Ghi lại vào history.json
+    with open("history.json", "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=4)
+
     return ma_gd
-
-
-
 def mo_so_tiet_kiem(tai_khoan_dang_nhap):
     if not xac_thuc_pin(tai_khoan_dang_nhap):
         return
@@ -305,7 +303,6 @@ def xem_danh_sach_so(tai_khoan_dang_nhap):
     if dem == 0:
         print("Ban chua co so tiet kiem nào.\n")
     return dem
-
 def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
     if not xac_thuc_pin(tai_khoan_dang_nhap):
         return
