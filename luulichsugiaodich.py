@@ -103,39 +103,39 @@ class LichSuGiaoDich:
         except Exception:
             return du_lieu_he_thong
 
-        tokens = []
+        chuoi = []
         i = 0
         do_dai_json = self._dem_phan_tu(chuoi_json)
         while i < do_dai_json:
             char = chuoi_json[i]
             if char == '"':
-                token_str = ""
+                chuoi_str = ""
                 i += 1
                 while i < do_dai_json and chuoi_json[i] != '"':
-                    token_str = token_str + chuoi_json[i]
+                    chuoi_str = chuoi_str + chuoi_json[i]
                     i += 1
-                tokens = tokens + [token_str]
+                chuoi = chuoi + [chuoi_str]
             elif char in (':', '{', '}', '[', ']', ','):
-                tokens = tokens + [char]
+                chuoi = chuoi + [char]
             i += 1
 
         t = 0
-        do_dai_tokens = self._dem_phan_tu(tokens)
-        while t < do_dai_tokens:
-            is_sdt = self._dem_phan_tu(tokens[t]) == 10
+        do_dai_chuoi = self._dem_phan_tu(chuoi)
+        while t < do_dai_chuoi:
+            is_sdt = self._dem_phan_tu(chuoi[t]) == 10
             if is_sdt:
-                for char in tokens[t]:
+                for char in chuoi[t]:
                     if char not in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'):
                         is_sdt = False
                         break
 
-            if is_sdt and (t + 4 < do_dai_tokens) and tokens[t+1] == ':' and tokens[t+2] == '{' and tokens[t+3] == "lich_su":
-                sdt = tokens[t]
+            if is_sdt and (t + 4 < do_dai_chuoi) and chuoi[t+1] == ':' and chuoi[t+2] == '{' and chuoi[t+3] == "lich_su":
+                sdt = chuoi[t]
                 mang_gd_cua_user = []
                 
                 t = t + 6 
-                while t < do_dai_tokens and tokens[t] != ']':
-                    chuoi_gd_tho = tokens[t]
+                while t < do_dai_chuoi and chuoi[t] != ']':
+                    chuoi_gd_tho = chuoi[t]
                     if self._dem_phan_tu(chuoi_gd_tho) > 5:
                         
                         # Split thủ công chuỗi giao dịch bằng dấu '|'
