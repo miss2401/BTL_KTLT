@@ -96,7 +96,8 @@ def dang_nhap():
                             continue
                         tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
                         while(Kiem_tra_so(tk_nhan)):
-                            tien_chuyen = int(tien_chuyen)
+                            tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
+                        tien_chuyen = int(tien_chuyen)
                         chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
                         danh_sach_tk = db._doc_file()
                         for tk in danh_sach_tk:

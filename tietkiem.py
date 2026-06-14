@@ -2,7 +2,7 @@ import os
 import random
 import json
 import datetime
-
+from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, check_mat_khau
 class Node:
     def __init__(self, data):
         self.data = data
@@ -240,7 +240,10 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
     print("Lai suat: 0.1%/thang (không ky han)")
     print(f"So du hien tai: {tai_khoan_dang_nhap.so_du} VND\n")
     try:
-        so_tien = int(input("Nhap so tien gui: "))
+        so_tien = input("Nhap so tien gui: ")
+        while(Kiem_tra_so(so_tien)):
+            so_tien = input("Nhap so tien gui: ")
+        so_tien = int(so_tien)
     except:
         print(" So tien không hop le!")
         return
