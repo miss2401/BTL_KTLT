@@ -73,7 +73,7 @@ def dang_nhap():
                     try:
                         tien_rut = input("Nhap so tien muon rut (VND): ")
                         while(Kiem_tra_so(tien_rut)):
-                            tien_nap = int(input("Nhap so tien muon nap (VND): "))
+                            tien_rut = input("Nhap so tien muon rut (VND): ")
                         tien_rut = int(tien_rut)
                         rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)
                         danh_sach_tk = db._doc_file()
@@ -95,7 +95,7 @@ def dang_nhap():
                             print("So tai khoan phai la 8 chu so!")
                             continue
                         tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
-                        while(Kiem_tra_so(tk_nhan)):
+                        while(Kiem_tra_so(tien_chuyen)):
                             tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
                         tien_chuyen = int(tien_chuyen)
                         chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
