@@ -37,7 +37,7 @@ def Kiem_tra_sdt_ton_tai(sdt):
         return 0
     except:
         return 0
-def check_mat_khau(arr):
+def Kiem_tra_mat_khau(arr):
     co_chu_thuong = False
     co_chu_hoa = False
     co_so = False

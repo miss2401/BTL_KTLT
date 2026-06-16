@@ -2,7 +2,7 @@ import os
 import random
 import json
 import datetime
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, check_mat_khau
+from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten
 class Node:
     def __init__(self, data):
         self.data = data
@@ -83,12 +83,12 @@ class TaiKhoan:
         self.so_du = int(so_du)
         self.ma_pin = str(ma_pin)
 class QuanLyTietKiem:
-    def __init__(self, db_file="tichkiem.json"):
+    def __init__(self, db_file="tietkiem.json"):
         self.db_file = db_file
         if not os.path.exists(self.db_file):
             with open(self.db_file, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
-    def _doc_file(self):
+    def Doc_file(self):
         if not os.path.exists(self.db_file):
             return LinkedList()
         try:
@@ -109,7 +109,7 @@ class QuanLyTietKiem:
             return ll
         except:
             return LinkedList()
-    def _ghi_file(self, danh_sach_so):
+    def Ghi_file(self, danh_sach_so):
         data = []
         cur = danh_sach_so.get_head()
         while cur:
@@ -127,7 +127,7 @@ class QuanLyTietKiem:
         with open(self.db_file, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
-    def tinh_lai_suat(self, so_tien_gui, ngay_gui_str):
+    def Tinh_lai_suat(self, so_tien_gui, ngay_gui_str):
         """Tính lãi suất không kỳ hạn (0.1%/thang)"""
         try:
             ngay_gui = datetime.datetime.strptime(ngay_gui_str, "%Y-%m-%d").date()
@@ -141,7 +141,7 @@ class QuanLyTietKiem:
         lai_suat_thang = 0.1
         return int(so_tien_gui * (lai_suat_thang / 100) * so_thang)
 
-def doc_tai_khoan_tu_data():
+def Doc_tai_khoan_tu_data():
     if not os.path.exists("data.json"):
         return LinkedList()
     try:
@@ -164,7 +164,7 @@ def doc_tai_khoan_tu_data():
     except:
         return LinkedList()
 
-def ghi_tai_khoan_vao_data(danh_sach_tk):
+def Ghi_tai_khoan_vao_data(danh_sach_tk):
     du_lieu = {}
     cur = danh_sach_tk.get_head()
     while cur:
@@ -181,7 +181,7 @@ def ghi_tai_khoan_vao_data(danh_sach_tk):
         cur = cur.next
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(du_lieu, f, ensure_ascii=False, indent=4)
-def xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
+def Xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
     pin_he_thong = tai_khoan.ma_pin
     if not pin_he_thong:
         print("Khong tim thay ma PIN!")
@@ -200,41 +200,41 @@ def xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
                 print("Sai PIN qua 3 lan. Giao dịch bi huy!")
     return False
 
-def ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
+def Ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
     now = datetime.datetime.now()
     timestamp = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond//1000:03d}"
     ma_gd = f"GD{timestamp}_{random.randint(0,999):03d}"
 
-    # Đọc history.json hiện tại
-    if os.path.exists("history.json"):
-        with open("history.json", "r", encoding="utf-8") as f:
+    # Đọc lich_su.json hiện tại
+    if os.path.exists("lichsu.json"):
+        with open("lichsu.json", "r", encoding="utf-8") as f:
             try:
-                history = json.load(f)
+                lich_su = json.load(f)
             except:
-                history = {}
+                lich_su = {}
     else:
-        history = {}
+        lich_su = {}
 
     gd_str = f"{ma_gd}|{sdt_gui}|{sdt_nhan}|{so_tien}|{noi_dung}"
 
     # Thêm vào lịch sử của người gửi
-    if sdt_gui not in history:
-        history[sdt_gui] = {"lich_su": []}
-    history[sdt_gui]["lich_su"].append(gd_str)
+    if sdt_gui not in lich_su:
+        lich_su[sdt_gui] = {"lich_su": []}
+    lich_su[sdt_gui]["lich_su"].append(gd_str)
 
     # Thêm vào lịch sử của người nhận (nếu không phải tài khoản hệ thống)
     if sdt_nhan not in ("TIETKIEM", "NAP_TIEN", "RUT_TIEN") and sdt_nhan != sdt_gui:
-        if sdt_nhan not in history:
-            history[sdt_nhan] = {"lich_su": []}
-        history[sdt_nhan]["lich_su"].append(gd_str)
+        if sdt_nhan not in lich_su:
+            lich_su[sdt_nhan] = {"lich_su": []}
+        lich_su[sdt_nhan]["lich_su"].append(gd_str)
 
-    # Ghi lại vào history.json
-    with open("history.json", "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=4)
+    # Ghi lại vào lich_su.json
+    with open("lich_su.json", "w", encoding="utf-8") as f:
+        json.dump(lich_su, f, ensure_ascii=False, indent=4)
 
     return ma_gd
-def mo_so_tiet_kiem(tai_khoan_dang_nhap):
-    if not xac_thuc_pin(tai_khoan_dang_nhap):
+def Mo_so_tiet_kiem(tai_khoan_dang_nhap):
+    if not Xac_thuc_pin(tai_khoan_dang_nhap):
         return
     print("\nMO SO TIET KIEM MOI")
     print("Lai suat: 0.1%/thang (không ky han)")
@@ -254,7 +254,7 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
         print(" So du khong đu!")
         return
     # Cập nhật số dư tài khoản (từ file data.json)
-    ds_tk = doc_tai_khoan_tu_data()
+    ds_tk = Doc_tai_khoan_tu_data()
     cap_nhat = False
     cur = ds_tk.get_head()
     while cur:
@@ -267,29 +267,29 @@ def mo_so_tiet_kiem(tai_khoan_dang_nhap):
     if not cap_nhat:
         print("Khong tim thay tai khoan!")
         return
-    ghi_tai_khoan_vao_data(ds_tk)
+    Ghi_tai_khoan_vao_data(ds_tk)
 
     # Tạo sổ tiết kiệm
     ql = QuanLyTietKiem()
-    ds_so = ql._doc_file()
+    ds_so = ql.Doc_file()
     ma_so = "STK" + str(random.randint(100000, 999999))
     ngay_gui = datetime.date.today().strftime("%Y-%m-%d")
     so_moi = SoTietKiem(ma_so, tai_khoan_dang_nhap.so_dien_thoai, so_tien, 0, ngay_gui, 0.1, 1)
     ds_so.append(so_moi)
-    ql._ghi_file(ds_so)
+    ql.Ghi_file(ds_so)
 
     # Ghi lịch sử giao dịch
     noi_dung = f"Mo so tiet kiem - Ma so: {ma_so} - So tien: {so_tien} VND"
-    ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", so_tien, noi_dung)
+    Ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", so_tien, noi_dung)
     print("\n Mo so tiet kiem thanh cong!")
     print(f"  Ma so: {ma_so}")
     print(f"  So tien: {so_tien} VND")
     print(f"  Ngay gui: {ngay_gui}")
     print(f"  So du con lại: {tai_khoan_dang_nhap.so_du} VND\n")
 
-def xem_danh_sach_so(tai_khoan_dang_nhap):
+def Xem_danh_sach_so(tai_khoan_dang_nhap):
     ql = QuanLyTietKiem()
-    ds_so = ql._doc_file()
+    ds_so = ql.Doc_file()
     dem = 0
     print("\nDANH SACH SO TIET KIEM\n")
     cur = ds_so.get_head()
@@ -297,7 +297,7 @@ def xem_danh_sach_so(tai_khoan_dang_nhap):
         so = cur.data
         if so.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai and so.trang_thai == 1:
             dem += 1
-            lai = ql.tinh_lai_suat(so.so_tien_gui, so.ngay_gui)
+            lai = ql.Tinh_lai_suat(so.so_tien_gui, so.ngay_gui)
             print(f"{dem}. Ma so: {so.ma_so}")
             print(f"   Tien gui: {so.so_tien_gui} VND")
             print(f"   Ngay gui: {so.ngay_gui}")
@@ -306,34 +306,34 @@ def xem_danh_sach_so(tai_khoan_dang_nhap):
     if dem == 0:
         print("Ban chua co so tiet kiem nào.\n")
     return dem
-def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
-    if not xac_thuc_pin(tai_khoan_dang_nhap):
+def Tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
+    if not Xac_thuc_pin(tai_khoan_dang_nhap):
         return
     ql = QuanLyTietKiem()
-    ds_so = ql._doc_file()
-    dem = xem_danh_sach_so(tai_khoan_dang_nhap)
+    ds_so = ql.Doc_file()
+    dem = Xem_danh_sach_so(tai_khoan_dang_nhap)
     if dem == 0:
         return
     ma_so = input("Nhap ma so so muon tat toan: ")
-    found = False
+    kiem_tra = False
     cur = ds_so.get_head()
     while cur:
         so = cur.data
         if so.ma_so == ma_so and so.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai and so.trang_thai == 1:
-            found = True
+            kiem_tra= True
             tien_goc = so.so_tien_gui
-            tien_lai = ql.tinh_lai_suat(tien_goc, so.ngay_gui)
+            tien_lai = ql.Tinh_lai_suat(tien_goc, so.ngay_gui)
             tong = tien_goc + tien_lai
             so.trang_thai = 0
             break
         cur = cur.next
-    if not found:
+    if not kiem_tra:
         print("Khong tim thay so tiet kiem hop le!\n")
         return
     # Ghi lại danh sách sổ đã cập nhật
-    ql._ghi_file(ds_so)
+    ql.Ghi_file(ds_so)
     # Cập nhật số dư tài khoản
-    ds_tk = doc_tai_khoan_tu_data()
+    ds_tk = Doc_tai_khoan_tu_data()
     cur = ds_tk.get_head()
     while cur:
         if cur.data.so_dien_thoai == tai_khoan_dang_nhap.so_dien_thoai:
@@ -341,15 +341,15 @@ def tat_toan_so_tiet_kiem(tai_khoan_dang_nhap):
             tai_khoan_dang_nhap.so_du = cur.data.so_du
             break
         cur = cur.next
-    ghi_tai_khoan_vao_data(ds_tk)
+    Ghi_tai_khoan_vao_data(ds_tk)
     noi_dung = f"Tat toan so tiet kiem - Ma so: {ma_so} - Tien goc: {tien_goc} VND - Tien lai: {tien_lai} VND - Tong: {tong} VND"
-    ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", tong, noi_dung)
+    Ghi_lich_su_giao_dich(tai_khoan_dang_nhap.so_dien_thoai, "TIETKIEM", tong, noi_dung)
     print("\n Tat toan thanh cong!")
     print(f"  Tien goc: {tien_goc} VND")
     print(f"  Tien lai: {tien_lai} VND")
     print(f"  Tong nhan: {tong} VND")
     print(f"  So du moi: {tai_khoan_dang_nhap.so_du} VND\n")
-def menu_tich_kiem(tai_khoan_dang_nhap):
+def Menu(tai_khoan_dang_nhap):
     while True:
         print("1. Mo so tiet kiem moi")
         print("2. Xem danh sách so")
@@ -357,11 +357,11 @@ def menu_tich_kiem(tai_khoan_dang_nhap):
         print("4. Quay lại")
         chon = input("Nhap lua chon (1-4): ")
         if chon == "1":
-            mo_so_tiet_kiem(tai_khoan_dang_nhap)
+            Mo_so_tiet_kiem(tai_khoan_dang_nhap)
         elif chon == "2":
-            xem_danh_sach_so(tai_khoan_dang_nhap)
+            Xem_danh_sach_so(tai_khoan_dang_nhap)
         elif chon == "3":
-            tat_toan_so_tiet_kiem(tai_khoan_dang_nhap)
+            Tat_toan_so_tiet_kiem(tai_khoan_dang_nhap)
         elif chon == "4":
             break
         else:

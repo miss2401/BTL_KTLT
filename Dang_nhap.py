@@ -1,13 +1,10 @@
 import json
 from data import BankDatabase 
 import tietkiem as TK
-from giao_dich import nap_tien, rut_tien, chuyen_khoan
-from truyxuatGD import menu_truy_xuat_giao_dich
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, check_mat_khau
-from giao_dich import nap_tien, rut_tien, chuyen_khoan
-from truyxuatGD import menu_truy_xuat_giao_dich
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, check_mat_khau
-def doc_du_lieu():
+from giao_dich import Nap_tien, Rut_tien, Chuyen_khoan
+from truyxuatGD import Menu
+from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
+def Doc_du_lieu():
     try:
         with open("data.json", "r", encoding="utf-8") as file:
             danh_sach_tai_khoan = json.load(file)
@@ -18,17 +15,16 @@ def doc_du_lieu():
     except json.JSONDecodeError:
         print("Loi: File data.json bi sai dinh dang")
         return {}
-def luu_du_lieu(danh_sach_tai_khoan):
+def Luu_du_lieu(danh_sach_tai_khoan):
     try:
         with open("data.json", "w", encoding="utf-8") as file:
             json.dump(danh_sach_tai_khoan, file, indent=4, ensure_ascii=False)
     except Exception as e:
         print("Loi khi luu du lieu:", e)
         
-        
-def dang_nhap():
+def Dang_nhap():
     db = BankDatabase("data.json")
-    danh_sach_tk = db._doc_file()
+    danh_sach_tk = db.Doc_file()
     so_lan_sai = 0    
     while so_lan_sai < 5:
         sdt = input("Nhap so dien thoai: ")
@@ -62,12 +58,8 @@ def dang_nhap():
                         while(Kiem_tra_so(tien_nap)):
                             tien_nap = input("Nhap so tien muon nap (VND): ")
                         tien_nap = int(tien_nap)
-                        tien_nap = input("Nhap so tien muon nap (VND): ")
-                        while(Kiem_tra_so(tien_nap)):
-                            tien_nap = input("Nhap so tien muon nap (VND): ")
-                        tien_nap = int(tien_nap)
-                        nap_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_nap)
-                        danh_sach_tk = db._doc_file()
+                        Nap_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_nap)
+                        danh_sach_tk = db.Doc_file()
                         for tk in danh_sach_tk:
                             if tk.so_dien_thoai == sdt:
                                 tai_khoan = tk
@@ -77,19 +69,14 @@ def dang_nhap():
                     except Exception as e:
                         print("Loi:", str(e))
 
-
                 elif lua_chon == "2":
                     try:
                         tien_rut = input("Nhap so tien muon rut (VND): ")
                         while(Kiem_tra_so(tien_rut)):
                             tien_nap = int(input("Nhap so tien muon nap (VND): "))
                         tien_rut = int(tien_rut)
-                        tien_rut = input("Nhap so tien muon rut (VND): ")
-                        while(Kiem_tra_so(tien_rut)):
-                            tien_nap = int(input("Nhap so tien muon nap (VND): "))
-                        tien_rut = int(tien_rut)
-                        rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)
-                        danh_sach_tk = db._doc_file()
+                        Rut_tien(db, danh_sach_tk, tai_khoan.so_tai_khoan, tien_rut)
+                        danh_sach_tk = db.Doc_file()
                         for tk in danh_sach_tk:
                             if tk.so_dien_thoai == sdt:
                                 tai_khoan = tk
@@ -104,9 +91,6 @@ def dang_nhap():
                         tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
                         while(Kiem_tra_so(tk_nhan)):
                             tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
-                        tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
-                        while(Kiem_tra_so(tk_nhan)):
-                            tk_nhan = input("Nhap so tai khoan nguoi nhan: ")
                         if not tk_nhan or len(tk_nhan) != 8:
                             print("So tai khoan phai la 8 chu so!")
                             continue
@@ -114,8 +98,8 @@ def dang_nhap():
                         while(Kiem_tra_so(tk_nhan)):
                             tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
                         tien_chuyen = int(tien_chuyen)
-                        chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
-                        danh_sach_tk = db._doc_file()
+                        Chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
+                        danh_sach_tk = db.Doc_file()
                         for tk in danh_sach_tk:
                             if tk.so_dien_thoai == sdt:
                                 tai_khoan = tk
@@ -124,14 +108,13 @@ def dang_nhap():
                         print("So tien phai la so nguyen!")
                     except Exception as e:
                         print("Loi:", str(e))                       
-                        print("Loi:", str(e))                       
                 elif lua_chon == "4":
                     try:
                         db_bank = BankDatabase()
-                        tk_obj = db_bank.lay_thong_tin_user(sdt)
+                        tk_obj = db_bank.Lay_thong_tin(sdt)
                         if tk_obj:
                             TK.menu_tich_kiem(tk_obj)
-                            danh_sach_tk = db._doc_file()
+                            danh_sach_tk = db.Doc_file()
                             for tk in danh_sach_tk:
                                 if tk.so_dien_thoai == sdt:
                                     tai_khoan = tk
@@ -143,7 +126,7 @@ def dang_nhap():
                         
                 elif lua_chon == "5":
                     try:
-                        menu_truy_xuat_giao_dich(sdt)
+                        Menu(sdt)
                     except Exception as e:
                         print("Loi khi truy xuat giao dich:", str(e))
                         

@@ -17,7 +17,7 @@ class DanhSachGiaoDich:
     def __init__(self):
         self.head = None
 
-    def them_giao_dich(self, giao_dich):
+    def Them_giao_dich(self, giao_dich):
         n_node = NodeGiaoDich(giao_dich)
         if self.head is None:
             self.head = n_node
@@ -48,7 +48,7 @@ class BankDatabase:
             with open(self.db_file, "w", encoding="utf-8") as f:
                 f.write("{}")
 
-    def _doc_file(self):
+    def Doc_file(self):
         #Parse thủ công file JSON để tạo ra một mảng phẳng chứa các đối tượng tài khoản người dùng
         danh_sach_tk = []
         try:
@@ -133,7 +133,7 @@ class BankDatabase:
 
         return danh_sach_tk
 
-    def _ghi_file(self, danh_sach_tk):
+    def Ghi_file(self, danh_sach_tk):
         #Lắp ráp chuỗi json
         chuoi_json = "{\n"
         for i in range(len(danh_sach_tk)):
@@ -158,8 +158,8 @@ class BankDatabase:
         with open(self.db_file, "w", encoding="utf-8") as f:
             f.write(chuoi_json)
 
-    def them_tai_khoan_moi(self, ho_ten, so_dien_thoai, mat_khau, email, cccd, ma_pin):
-        danh_sach_tk = self._doc_file()
+    def Them_tai_khoan(self, ho_ten, so_dien_thoai, mat_khau, email, cccd, ma_pin):
+        danh_sach_tk = self.Doc_file()
 
         #Kiểm tra trùng sđt
         for i in range(len(danh_sach_tk)):
@@ -182,11 +182,11 @@ class BankDatabase:
         tk_moi = TaiKhoan(so_dien_thoai, ho_ten, mat_khau, email, cccd, so_tai_khoan, 0, ma_pin)
         danh_sach_tk = danh_sach_tk + [tk_moi]
         
-        self._ghi_file(danh_sach_tk)
+        self.Ghi_file(danh_sach_tk)
         return so_tai_khoan
 
-    def lay_thong_tin_user(self, so_dien_thoai):
-        danh_sach_tk = self._doc_file()
+    def Lay_thong_tin(self, so_dien_thoai):
+        danh_sach_tk = self.Doc_file()
         for i in range(len(danh_sach_tk)):
             if danh_sach_tk[i].so_dien_thoai == str(so_dien_thoai):
                 return danh_sach_tk[i]
