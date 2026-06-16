@@ -18,10 +18,10 @@ def Nap_tien(db, danh_sach_tk, so_tk, so_tien):
     tk.so_du += int(so_tien)    
     gd_moi = GiaoDich("NAP TIEN", so_tien, tk.so_du, "KHONG CO")
     tk.lich_su_giao_dich.Them_giao_dich(gd_moi)    
-    db._ghi_file(danh_sach_tk)
+    db.Ghi_file(danh_sach_tk)
     
     lich_su = LichSuGiaoDich()
-    lich_su.ghi_nhan_giao_dich(tk.so_dien_thoai, "Nap_tien", so_tien, "NAP TIEN")
+    lich_su.Ghi_giao_dich(tk.so_dien_thoai, "Nap_tien", so_tien, "NAP TIEN")
     
     print("NAP TIEN THANH CONG! So du hien tai:", tk.so_du, "VND")
     return True
@@ -40,9 +40,9 @@ def Rut_tien(db, danh_sach_tk, so_tk, so_tien):
     tk.so_du -= int(so_tien)    
     gd_moi = GiaoDich("RUT TIEN", so_tien, tk.so_du, "KHONG CO")
     tk.lich_su_giao_dich.Them_giao_dich(gd_moi)    
-    db._ghi_file(danh_sach_tk)
+    db.Ghi_file(danh_sach_tk)
     lich_su = LichSuGiaoDich()
-    lich_su.ghi_nhan_giao_dich(tk.so_dien_thoai, "Rut_tien", so_tien, "RUT TIEN")
+    lich_su.Ghi_giao_dich(tk.so_dien_thoai, "Rut_tien", so_tien, "RUT TIEN")
     print("RUT TIEN THANH CONG! So du hien tai:", tk.so_du, "VND")
     return True
 def Chuyen_khoan(db, danh_sach_tk, nguon, dich, so_tien):
@@ -66,9 +66,9 @@ def Chuyen_khoan(db, danh_sach_tk, nguon, dich, so_tien):
     gd_nhan = GiaoDich("NHAN TIEN", so_tien, tk_dich.so_du, tk_nguon.so_tai_khoan)    
     tk_nguon.lich_su_giao_dich.Them_giao_dich(gd_gui)
     tk_dich.lich_su_giao_dich.Them_giao_dich(gd_nhan)    
-    db._ghi_file(danh_sach_tk)  
+    db.Ghi_file(danh_sach_tk)  
     lich_su = LichSuGiaoDich()
-    lich_su.ghi_nhan_giao_dich(tk_nguon.so_dien_thoai, tk_dich.so_dien_thoai, so_tien, "CHUYEN KHOAN")
+    lich_su.Ghi_giao_dich(tk_nguon.so_dien_thoai, tk_dich.so_dien_thoai, so_tien, "CHUYEN KHOAN")
     print("CHUYEN KHOAN THANH CONG!")
     print("So du hien tai cua ban:", tk_nguon.so_du, "VND")
     return True

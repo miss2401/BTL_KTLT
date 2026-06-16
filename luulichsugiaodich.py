@@ -10,7 +10,7 @@ class GiaoDich:
         self.so_tien = int(so_tien)
         self.noi_dung = noi_dung
 class LichSuGiaoDich:
-    def __init__(self, db_file="history.json"):
+    def __init__(self, db_file="lich_su.json"):
         self.db_file = db_file
         
         # Khởi tạo trạng thái cho bộ đếm chống trùng lặp toàn thời gian trên RAM

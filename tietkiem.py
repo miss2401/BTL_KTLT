@@ -206,8 +206,8 @@ def Ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
     ma_gd = f"GD{timestamp}_{random.randint(0,999):03d}"
 
     # Đọc lich_su.json hiện tại
-    if os.path.exists("lichsu.json"):
-        with open("lichsu.json", "r", encoding="utf-8") as f:
+    if os.path.exists("lich_su.json"):
+        with open("lich_su.json", "r", encoding="utf-8") as f:
             try:
                 lich_su = json.load(f)
             except:
