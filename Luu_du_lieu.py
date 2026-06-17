@@ -41,7 +41,7 @@ class TaiKhoan:
         self.lich_su_giao_dich = DanhSachGiaoDich()
 
 class BankDatabase:
-    def __init__(self, db_file="data.json"):
+    def __init__(self, db_file="Du_lieu.json"):
         self.db_file = db_file
         # Nếu file chưa tồn tại hoặc rỗng, tạo một file mới với nội dung là một object JSON rỗng
         if not os.path.exists(self.db_file) or os.path.getsize(self.db_file) == 0:

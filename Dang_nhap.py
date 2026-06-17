@@ -1,29 +1,29 @@
 import json
-from data import BankDatabase 
-import tietkiem as TK
-from giao_dich import Nap_tien, Rut_tien, Chuyen_khoan
-from truyxuatGD import Menu
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
+from Luu_du_lieu import BankDatabase 
+import Tiet_kiem as TK
+from Giao_dich import Nap_tien, Rut_tien, Chuyen_khoan
+from Truy_xuat_giao_dich import Menu
+from Kiem_tra import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
 def Doc_du_lieu():
     try:
-        with open("data.json", "r", encoding="utf-8") as file:
+        with open("Du_lieu.json", "r", encoding="utf-8") as file:
             danh_sach_tai_khoan = json.load(file)
             return danh_sach_tai_khoan            
     except FileNotFoundError:
-        print("Loi: Khong tim thay file du lieu data.json")
+        print("Loi: Khong tim thay file du lieu Du_lieu.json")
         return {}
     except json.JSONDecodeError:
-        print("Loi: File data.json bi sai dinh dang")
+        print("Loi: File Du_lieu.json bi sai dinh dang")
         return {}
 def Luu_du_lieu(danh_sach_tai_khoan):
     try:
-        with open("data.json", "w", encoding="utf-8") as file:
+        with open("Du_lieu.json", "w", encoding="utf-8") as file:
             json.dump(danh_sach_tai_khoan, file, indent=4, ensure_ascii=False)
     except Exception as e:
         print("Loi khi luu du lieu:", e)
         
 def Dang_nhap():
-    db = BankDatabase("data.json")
+    db = BankDatabase("Du_lieu.json")
     danh_sach_tk = db.Doc_file()
     so_lan_sai = 0    
     while so_lan_sai < 5:
@@ -44,7 +44,7 @@ def Dang_nhap():
                 print("1. Nap tien")
                 print("2. Rut tien")
                 print("3. Chuyen khoan")
-                print("4. Gui tich kiem")
+                print("4. Gui tiet kiem")
                 print("5. Truy xuat giao dich")     
                 print("6. Dang xuat")
                 try:
@@ -98,7 +98,8 @@ def Dang_nhap():
                         while(Kiem_tra_so(tien_chuyen)):
                             tien_chuyen = input("Nhap so tien muon chuyen (VND): ")
                         tien_chuyen = int(tien_chuyen)
-                        Chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen)
+                        noi_dung = input("Nhap noi dung giao dich: ").strip()
+                        Chuyen_khoan(db, danh_sach_tk, tai_khoan.so_tai_khoan, tk_nhan, tien_chuyen, noi_dung)
                         danh_sach_tk = db.Doc_file()
                         for tk in danh_sach_tk:
                             if tk.so_dien_thoai == sdt:

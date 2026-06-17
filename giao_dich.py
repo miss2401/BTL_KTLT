@@ -1,5 +1,5 @@
-from data import GiaoDich
-from luulichsugiaodich import LichSuGiaoDich
+from Luu_du_lieu import GiaoDich
+from Luu_lich_su_giao_dich import LichSuGiaoDich
 
 def Tim_tai_khoan(danh_sach_tk, so_tk):
     for tk in danh_sach_tk:
@@ -45,7 +45,7 @@ def Rut_tien(db, danh_sach_tk, so_tk, so_tien):
     lich_su.Ghi_giao_dich(tk.so_dien_thoai, "Rut_tien", so_tien, "RUT TIEN")
     print("RUT TIEN THANH CONG! So du hien tai:", tk.so_du, "VND")
     return True
-def Chuyen_khoan(db, danh_sach_tk, nguon, dich, so_tien):
+def Chuyen_khoan(db, danh_sach_tk, nguon, dich, so_tien, noi_dung=""):
     if so_tien <= 0:
         print("So tien chuyen phai lon hon 0!")
         return False        
@@ -68,7 +68,7 @@ def Chuyen_khoan(db, danh_sach_tk, nguon, dich, so_tien):
     tk_dich.lich_su_giao_dich.Them_giao_dich(gd_nhan)    
     db.Ghi_file(danh_sach_tk)  
     lich_su = LichSuGiaoDich()
-    lich_su.Ghi_giao_dich(tk_nguon.so_dien_thoai, tk_dich.so_dien_thoai, so_tien, "CHUYEN KHOAN")
+    lich_su.Ghi_giao_dich(tk_nguon.so_dien_thoai, tk_dich.so_dien_thoai, so_tien, noi_dung if noi_dung else "CHUYEN KHOAN")
     print("CHUYEN KHOAN THANH CONG!")
     print("So du hien tai cua ban:", tk_nguon.so_du, "VND")
     return True

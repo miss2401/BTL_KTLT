@@ -2,7 +2,7 @@ import os
 import random
 import json
 import datetime
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten
+from Kiem_tra import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten
 class Node:
     def __init__(self, data):
         self.data = data
@@ -83,7 +83,7 @@ class TaiKhoan:
         self.so_du = int(so_du)
         self.ma_pin = str(ma_pin)
 class QuanLyTietKiem:
-    def __init__(self, db_file="tietkiem.json"):
+    def __init__(self, db_file="Tiet_kiem.json"):
         self.db_file = db_file
         if not os.path.exists(self.db_file):
             with open(self.db_file, "w", encoding="utf-8") as f:
@@ -142,10 +142,10 @@ class QuanLyTietKiem:
         return int(so_tien_gui * (lai_suat_thang / 100) * so_thang)
 
 def Doc_tai_khoan_tu_data():
-    if not os.path.exists("data.json"):
+    if not os.path.exists("Du_lieu.json"):
         return LinkedList()
     try:
-        with open("data.json", "r", encoding="utf-8") as f:
+        with open("Du_lieu.json", "r", encoding="utf-8") as f:
             du_lieu = json.load(f)   # du_lieu là dict {sdt: {...}}
         ll = LinkedList()
         for sdt, info in du_lieu.items():
@@ -179,7 +179,7 @@ def Ghi_tai_khoan_vao_data(danh_sach_tk):
             "ma_pin": tk.ma_pin
         }
         cur = cur.next
-    with open("data.json", "w", encoding="utf-8") as f:
+    with open("Du_lieu.json", "w", encoding="utf-8") as f:
         json.dump(du_lieu, f, ensure_ascii=False, indent=4)
 def Xac_thuc_pin(tai_khoan, so_lan_toi_da=3):
     pin_he_thong = tai_khoan.ma_pin
@@ -205,9 +205,9 @@ def Ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
     timestamp = f"{now.year}{now.month:02d}{now.day:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}_{now.microsecond//1000:03d}"
     ma_gd = f"GD{timestamp}_{random.randint(0,999):03d}"
 
-    # Đọc lich_su.json hiện tại
-    if os.path.exists("lich_su.json"):
-        with open("lich_su.json", "r", encoding="utf-8") as f:
+    # Đọc Lich_su.json hiện tại
+    if os.path.exists("Lich_su.json"):
+        with open("Lich_su.json", "r", encoding="utf-8") as f:
             try:
                 lich_su = json.load(f)
             except:
@@ -228,8 +228,8 @@ def Ghi_lich_su_giao_dich(sdt_gui, sdt_nhan, so_tien, noi_dung):
             lich_su[sdt_nhan] = {"lich_su": []}
         lich_su[sdt_nhan]["lich_su"].append(gd_str)
 
-    # Ghi lại vào lich_su.json
-    with open("lich_su.json", "w", encoding="utf-8") as f:
+    # Ghi lại vào Lich_su.json
+    with open("Lich_su.json", "w", encoding="utf-8") as f:
         json.dump(lich_su, f, ensure_ascii=False, indent=4)
 
     return ma_gd
@@ -253,7 +253,7 @@ def Mo_so_tiet_kiem(tai_khoan_dang_nhap):
     if so_tien > tai_khoan_dang_nhap.so_du:
         print(" So du khong đu!")
         return
-    # Cập nhật số dư tài khoản (từ file data.json)
+    # Cập nhật số dư tài khoản (từ file Du_lieu.json)
     ds_tk = Doc_tai_khoan_tu_data()
     cap_nhat = False
     cur = ds_tk.get_head()

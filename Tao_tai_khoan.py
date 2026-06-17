@@ -1,5 +1,5 @@
-from data import BankDatabase as BD
-from check import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
+from Luu_du_lieu import BankDatabase as BD
+from Kiem_tra import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
 class User:
     def __init__(self, sdt,  ho_ten, email, cccd, ma_pin, mat_khau):
         self.ho_ten = ho_ten
