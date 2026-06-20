@@ -1,3 +1,5 @@
+from Luu_du_lieu import BankDatabase as BD
+
 def Kiem_tra_so(arr):
     for i in arr:
         if(i < '0' or i > '9'):
