@@ -38,7 +38,10 @@ def Tao_tai_khoan():
         email = input("Nhap lai email: ")
     email = email + "@gmail.com"
     database = BD()
-    database.Them_tai_khoan(ten, sdt, mat_khau2, email, cccd, ma_pin)
-    print("Tao tai khoan thanh cong")
+    ket_qua = database.Them_tai_khoan(ten, sdt, mat_khau2, email, cccd, ma_pin)
+    if ket_qua:
+        print("Tao tai khoan thanh cong")
+    else:
+        print("Tao tai khoan khong thanh cong.")
     
     
