@@ -1,0 +1,92 @@
+{
+    "0911223344": {
+        "ho_ten": "Phan Van Chanh",
+        "mat_khau": "Chanhphan2026!",
+        "email": "chanh.pv@gmail.com",
+        "cccd": "001201009876",
+        "so_tai_khoan": "48105923",
+        "so_du": 110000,
+        "ma_pin": "111111"
+    },
+    "0922334455": {
+        "ho_ten": "Nguyen Thi Diem",
+        "mat_khau": "Diemnguyen2026@",
+        "email": "diem.nt@gmail.com",
+        "cccd": "002202008765",
+        "so_tai_khoan": "15924836",
+        "so_du": 45000,
+        "ma_pin": "222222"
+    },
+    "0933445566": {
+        "ho_ten": "Tran Minh Quan",
+        "mat_khau": "Quanminh2026#",
+        "email": "quan.tm@gmail.com",
+        "cccd": "003203007654",
+        "so_tai_khoan": "72048163",
+        "so_du": 20000,
+        "ma_pin": "333333"
+    },
+    "0944556677": {
+        "ho_ten": "Le Hoang Bach",
+        "mat_khau": "Bachle2026$",
+        "email": "bach.lh@gmail.com",
+        "cccd": "004204006543",
+        "so_tai_khoan": "36491825",
+        "so_du": 30000,
+        "ma_pin": "444444"
+    },
+    "0955667788": {
+        "ho_ten": "Vu Phuong Thao",
+        "mat_khau": "Thaovu2026%",
+        "email": "thao.vp@gmail.com",
+        "cccd": "005205005432",
+        "so_tai_khoan": "95182436",
+        "so_du": 150000,
+        "ma_pin": "555555"
+    },
+    "0966778899": {
+        "ho_ten": "Hoang Anh Tu",
+        "mat_khau": "Tuhoang2026^",
+        "email": "tu.ha@gmail.com",
+        "cccd": "006206004321",
+        "so_tai_khoan": "26841953",
+        "so_du": 70000,
+        "ma_pin": "666666"
+    },
+    "0977889900": {
+        "ho_ten": "Pham Quoc Bao",
+        "mat_khau": "Baopham2026&",
+        "email": "bao.pq@gmail.com",
+        "cccd": "007207003210",
+        "so_tai_khoan": "61524398",
+        "so_du": 20000,
+        "ma_pin": "777777"
+    },
+    "0988990011": {
+        "ho_ten": "Dang Thuy Tien",
+        "mat_khau": "Tiendang2026*",
+        "email": "tien.dt@gmail.com",
+        "cccd": "008208002109",
+        "so_tai_khoan": "84261539",
+        "so_du": 50000,
+        "ma_pin": "888888"
+    },
+    "0999001122": {
+        "ho_ten": "Bui Chi Thanh",
+        "mat_khau": "Thanhbui2026(",
+        "email": "thanh.bc@gmail.com",
+        "cccd": "009209001098",
+        "so_tai_khoan": "51937246",
+        "so_du": 10000,
+        "ma_pin": "999999"
+    },
+    "0900112233": {
+        "ho_ten": "Do Hong Ngoc",
+        "mat_khau": "Ngocdo2026)",
+        "email": "ngoc.dh@gmail.com",
+        "cccd": "010210000987",
+        "so_tai_khoan": "30485192",
+        "so_du": 95000,
+        "ma_pin": "000000"
+    }
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "ma_so": "STK111001",
+    "so_dien_thoai": "0911223344",
+    "so_tien_gui": 60000,
+    "ky_han": 0,
+    "ngay_gui": "2025-03-20",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK222002",
+    "so_dien_thoai": "0922334455",
+    "so_tien_gui": 30000,
+    "ky_han": 0,
+    "ngay_gui": "2025-06-10",
+    "lai_suat": 0.1,
+    "trang_thai": 1
+  },
+  {
+    "ma_so": "STK333003",
+    "so_dien_thoai": "0933445566",
+    "so_tien_gui": 15000,
+    "ky_han": 0,
+    "ngay_gui": "2026-04-05",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK444004",
+    "so_dien_thoai": "0944556677",
+    "so_tien_gui": 50000,
+    "ky_han": 0,
+    "ngay_gui": "2025-07-14",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK555005",
+    "so_dien_thoai": "0955667788",
+    "so_tien_gui": 100000,
+    "ky_han": 0,
+    "ngay_gui": "2025-08-19",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK666006",
+    "so_dien_thoai": "0966778899",
+    "so_tien_gui": 50000,
+    "ky_han": 0,
+    "ngay_gui": "2025-11-25",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK777007",
+    "so_dien_thoai": "0977889900",
+    "so_tien_gui": 40000,
+    "ky_han": 0,
+    "ngay_gui": "2025-05-22",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK888008",
+    "so_dien_thoai": "0988990011",
+    "so_tien_gui": 50000,
+    "ky_han": 0,
+    "ngay_gui": "2025-10-09",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK999009",
+    "so_dien_thoai": "0999001122",
+    "so_tien_gui": 30000,
+    "ky_han": 0,
+    "ngay_gui": "2025-02-28",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  },
+  {
+    "ma_so": "STK000010",
+    "so_dien_thoai": "0900112233",
+    "so_tien_gui": 55000,
+    "ky_han": 0,
+    "ngay_gui": "2025-09-12",
+    "lai_suat": 0.1,
+    "trang_thai": 0
+  }
+]

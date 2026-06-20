@@ -1,0 +1,66 @@
+{
+    "0911223344": {
+        "lich_su": [
+            "GD20241012_081522_101_000|0911223344|Nap_tien|200000|NAP TIEN",
+            "GD20241105_142011_102_000|0911223344|0922334455|30000|Chuyen tien an trua",
+            "GD20250320_093455_103_091|0911223344|TIETKIEM|60000|Mo so tiet kiem - Ma so: STK111001 - So tien: 60000 VND"
+        ]
+    },
+    "0922334455": {
+        "lich_su": [
+            "GD20241105_142011_102_000|0911223344|0922334455|30000|Chuyen tien an trua",
+            "GD20250115_101123_104_000|0922334455|Nap_tien|50000|NAP TIEN",
+            "GD20250610_154022_105_092|0922334455|TIETKIEM|30000|Mo so tiet kiem - Ma so: STK222002 - So tien: 30000 VND",
+            "GD20251218_110543_106_638|0922334455|TIETKIEM|30000|Tat toan so tiet kiem - Ma so: STK222002 - Tien goc: 30000 VND - Tien lai: 0 VND - Tong: 30000 VND",
+            "GD20260211_162500_107_000|0922334455|0933445566|35000|Tra tien mua sach"
+        ]
+    },
+    "0933445566": {
+        "lich_su": [
+            "GD20260211_162500_107_000|0922334455|0933445566|35000|Tra tien mua sach",
+            "GD20260405_091231_108_093|0933445566|TIETKIEM|15000|Mo so tiet kiem - Ma so: STK333003 - So tien: 15000 VND"
+        ]
+    },
+    "0944556677": {
+        "lich_su": [
+            "GD20240822_131105_109_000|0944556677|Nap_tien|80000|NAP TIEN",
+            "GD20250714_104512_110_094|0944556677|TIETKIEM|50000|Mo so tiet kiem - Ma so: STK444004 - So tien: 50000 VND"
+        ]
+    },
+    "0955667788": {
+        "lich_su": [
+            "GD20240905_112540_111_000|0955667788|Nap_tien|250000|NAP TIEN",
+            "GD20250819_143055_112_095|0955667788|TIETKIEM|100000|Mo so tiet kiem - Ma so: STK555005 - So tien: 100000 VND"
+        ]
+    },
+    "0966778899": {
+        "lich_su": [
+            "GD20250214_085012_113_000|0966778899|Nap_tien|120000|NAP TIEN",
+            "GD20251125_161534_114_096|0966778899|TIETKIEM|50000|Mo so tiet kiem - Ma so: STK666006 - So tien: 50000 VND"
+        ]
+    },
+    "0977889900": {
+        "lich_su": [
+            "GD20241201_100519_115_000|0977889900|Nap_tien|60000|NAP TIEN",
+            "GD20250522_114050_116_097|0977889900|TIETKIEM|40000|Mo so tiet kiem - Ma so: STK777007 - So tien: 40000 VND"
+        ]
+    },
+    "0988990011": {
+        "lich_su": [
+            "GD20250418_091533_117_000|0988990011|Nap_tien|100000|NAP TIEN",
+            "GD20251009_132241_118_098|0988990011|TIETKIEM|50000|Mo so tiet kiem - Ma so: STK888008 - So tien: 50000 VND"
+        ]
+    },
+    "0999001122": {
+        "lich_su": [
+            "GD20240730_151012_119_000|0999001122|Nap_tien|40000|NAP TIEN",
+            "GD20250228_100544_120_099|0999001122|TIETKIEM|30000|Mo so tiet kiem - Ma so: STK999009 - So tien: 30000 VND"
+        ]
+    },
+    "0900112233": {
+        "lich_su": [
+            "GD20250105_142511_121_000|0900112233|Nap_tien|150000|NAP TIEN",
+            "GD20250912_113015_122_100|0900112233|TIETKIEM|55000|Mo so tiet kiem - Ma so: STK000010 - So tien: 55000 VND"
+        ]
+    }
+}
