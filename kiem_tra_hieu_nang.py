@@ -1,4 +1,3 @@
-# kiem_tra_hieu_nang.py
 import time
 from Giao_dich import Nap_tien, Rut_tien, Chuyen_khoan
 from Luu_du_lieu import BankDatabase
@@ -12,8 +11,6 @@ class PerformanceTest:
         self.db = BankDatabase()
         self.results = {}
 
-    # ---------------------------------------------------------------- helpers --
-
     def do_thoi_gian(self, func, *args, **kwargs):
         """Đo thời gian thực thi của một hàm (giây)"""
         start = time.perf_counter()
@@ -26,8 +23,6 @@ class PerformanceTest:
             if tk.so_dien_thoai == sdt:
                 return tk
         return None
-
-    # ------------------------------------------------------------- test cases --
 
     def test_doc_file(self):
         print("\n=== KIEM TRA DOC FILE ===")
@@ -84,7 +79,7 @@ class PerformanceTest:
         )
         print(f"Nap tien               : {t1:.6f} giay")
 
-        danh_sach_tk = self.db.Doc_file()  # reload sau ghi
+        danh_sach_tk = self.db.Doc_file()
         _, t2 = self.do_thoi_gian(
             Rut_tien, self.db, danh_sach_tk, tk1.so_tai_khoan, so_tien
         )
@@ -136,11 +131,9 @@ class PerformanceTest:
 
         ql = QuanLyTietKiem()
 
-        # Đọc toàn bộ danh sách sổ
         ds_so, t1 = self.do_thoi_gian(ql.Doc_file)
         print(f"Doc Tiet_kiem.json     : {t1:.6f} giay")
 
-        # Đếm số sổ đang hoạt động
         dem_hoat_dong = 0
         dem_tat_toan  = 0
         cur = ds_so.get_head()
@@ -153,7 +146,6 @@ class PerformanceTest:
         tong_so = dem_hoat_dong + dem_tat_toan
         print(f"  Tong so: {tong_so}  |  Hoat dong: {dem_hoat_dong}  |  Tat toan: {dem_tat_toan}")
 
-        # Tìm sổ của tài khoản đầu tiên có sổ
         sdt_muc_tieu = None
         cur = ds_so.get_head()
         while cur:
@@ -179,7 +171,6 @@ class PerformanceTest:
         else:
             print(f"Tim so theo SDT        : (khong co so hoat dong)")
 
-        # Tính lãi suất hàng loạt cho tất cả sổ đang hoạt động
         def tinh_lai_hang_loat():
             ds = ql.Doc_file()
             cur = ds.get_head()
@@ -191,7 +182,6 @@ class PerformanceTest:
         _, t3 = self.do_thoi_gian(tinh_lai_hang_loat)
         print(f"Tinh lai hang loat     : {t3:.6f} giay  ({dem_hoat_dong} so)")
 
-        # Ghi lại file (không thay đổi nội dung)
         _, t4 = self.do_thoi_gian(ql.Ghi_file, ds_so)
         print(f"Ghi Tiet_kiem.json     : {t4:.6f} giay")
 
@@ -210,8 +200,6 @@ class PerformanceTest:
         print(f"Ghi Du_lieu.json       : {t1:.6f} giay")
 
         return {'ghi_tai_khoan': t1}
-
-    # ----------------------------------------------------------- tong hop --
 
     def chay_kiem_tra_toan_bo(self):
         print("=" * 60)
@@ -259,10 +247,6 @@ class PerformanceTest:
 
 
 def phan_tich_tang_truong(cac_so_luong=(100, 500, 1000)):
-    """
-    Với mỗi mức dữ liệu đã có sẵn, đo thời gian đọc 3 file và tìm kiếm
-    cuối danh sách, in xu hướng tăng trưởng.
-    """
     print("\n" + "=" * 60)
     print("PHAN TICH TOC DO TANG TRUONG")
     print("=" * 60)
