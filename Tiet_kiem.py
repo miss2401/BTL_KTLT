@@ -75,7 +75,7 @@ class TaiKhoan:
 
 
 class QuanLyTietKiem:
-    def __init__(self, db_file="tietkiem.json"):
+    def __init__(self, db_file="Tiet_kiem.json"):
         self.db_file = db_file
         if not os.path.exists(self.db_file) or os.path.getsize(self.db_file) == 0:
             with open(self.db_file, "w", encoding="utf-8") as f:
