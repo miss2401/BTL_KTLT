@@ -1,5 +1,5 @@
-import Tao_tai_khoan as CS
-import Dang_nhap as LS
+import Tao_tai_khoan as TTK
+import Dang_nhap as DN
 
 while True:
     # Prompt user and ensure input is a digit representing 1, 2, or 3.
@@ -15,9 +15,9 @@ while True:
         continue
     match answer:
         case 1:
-            LS.Dang_nhap()
+            DN.Dang_nhap()
         case 2:
-            CS.Tao_tai_khoan()
+            TTK.Tao_tai_khoan()
         case 3:
             print("Thoat thanh cong.")
             break
