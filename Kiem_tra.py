@@ -30,7 +30,7 @@ def Kiem_tra_email(email):
 def Kiem_tra_sdt_ton_tai(sdt):
     try:
         database = BD()
-        danh_sach_tk = database._doc_file()
+        danh_sach_tk = database.Doc_file()
         for tk in danh_sach_tk:
             if tk.so_dien_thoai == sdt:
                 return 1
