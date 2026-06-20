@@ -33,18 +33,18 @@ class LinkedList:
             yield cur.du_lieu
             cur = cur.next
 
-    def find_first(self, condition_func):
+    def find_first(self, dieu_kien):
         cur = self.head
         while cur:
-            if condition_func(cur.du_lieu):
+            if dieu_kien(cur.du_lieu):
                 return cur.du_lieu
             cur = cur.next
         return None
 
-    def update_first(self, condition_func, new_du_lieu):
+    def update_first(self, dieu_kien, new_du_lieu):
         cur = self.head
         while cur:
-            if condition_func(cur.du_lieu):
+            if dieu_kien(cur.du_lieu):
                 cur.du_lieu = new_du_lieu
                 return True
             cur = cur.next
