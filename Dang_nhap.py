@@ -4,23 +4,6 @@ import Tiet_kiem as TK
 from Giao_dich import Nap_tien, Rut_tien, Chuyen_khoan
 from Truy_xuat_giao_dich import Menu
 from Kiem_tra import Kiem_tra_email, Kiem_tra_sdt_ton_tai, Kiem_tra_so, Kiem_tra_ten, Kiem_tra_mat_khau
-def Doc_du_lieu():
-    try:
-        with open("Du_lieu.json", "r", encoding="utf-8") as file:
-            danh_sach_tai_khoan = json.load(file)
-            return danh_sach_tai_khoan            
-    except FileNotFoundError:
-        print("Loi: Khong tim thay file du lieu Du_lieu.json")
-        return {}
-    except json.JSONDecodeError:
-        print("Loi: File Du_lieu.json bi sai dinh dang")
-        return {}
-def Luu_du_lieu(danh_sach_tai_khoan):
-    try:
-        with open("Du_lieu.json", "w", encoding="utf-8") as file:
-            json.dump(danh_sach_tai_khoan, file, indent=4, ensure_ascii=False)
-    except Exception as e:
-        print("Loi khi luu du lieu:", e)
         
 def Dang_nhap():
     db = BankDatabase("Du_lieu.json")
